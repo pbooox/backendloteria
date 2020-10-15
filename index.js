@@ -34,6 +34,6 @@ app.get('/',requireToken,(req,res)=>{
     res.send({id:req.user.id,email:req.user.email,nombre:req.user.nombre,foto:req.user.foto})
 })
 
-app.listen(port,()=>{
+app.listen((process.env.PORT || 3000),()=>{
     console.log("server running "+PORT)
 })
