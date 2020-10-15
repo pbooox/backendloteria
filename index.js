@@ -36,5 +36,5 @@ app.get('/',requireToken,(req,res)=>{
 })
 
 app.listen(app.get('port'),()=>{
-    console.log("server running "+PORT)
+    console.log(`Server on port ${app.get('port')}`);
 })
