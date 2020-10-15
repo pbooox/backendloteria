@@ -6,7 +6,6 @@
   "scripts": {
 
     "server": "nodemon index.js",
-    "build": "NODE_ENV=production webpack -p",
     "start": "node index.js"
 
   },
