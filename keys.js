@@ -1,4 +1,4 @@
 module.exports = {
-    mogoUrl:"put your mongo url here",
-    jwtkey:"any random key "
+    mogoUrl:"mongodb+srv://loteria:loteria@cluster0.px7e0.mongodb.net/<dbname>?retryWrites=true&w=majority",
+    jwtkey:"dasdsad"
 }
