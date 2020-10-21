@@ -135,7 +135,7 @@ io.on('connection',connected);
                                                 }
                     
                                                     if(existe==0){
-                                                    console.log('Código de sala incorrecto')
+                                                    res.send(temp)
                                                     return;
                                                     }
                                                   
