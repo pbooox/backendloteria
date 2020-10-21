@@ -228,12 +228,18 @@ io.on('connection',connected);
                                                                       if (typeof room2.time !== 'undefined') {
                                                                           if (room2.time <= 0) {
       
-                                                                               
+                                                                             /*  clearInterval(intervalo); */
       
-                                                                              setTimeout(() => {
-                                                                                clearInterval(intervalo2);
-                                                                                  cartas();
-                                                                              }, 6000);
+                                                                                room2.time--
+
+                                                                                if(room2.time==-7){
+
+                                                                                    room2.time = 11;
+                                                                                }
+
+                                                                              /* setTimeout(() => {
+                                                                                  room2.time = 11;
+                                                                              }, 6000); */
       
                                                                               
                                                                               // emit time up
