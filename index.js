@@ -228,9 +228,10 @@ io.on('connection',connected);
                                                                       if (typeof room2.time !== 'undefined') {
                                                                           if (room2.time <= 0) {
       
-                                                                              clearInterval(intervalo2); 
+                                                                               
       
                                                                               setTimeout(() => {
+                                                                                clearInterval(intervalo2);
                                                                                   cartas();
                                                                               }, 6000);
       
