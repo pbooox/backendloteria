@@ -135,8 +135,8 @@ io.on('connection',connected);
                                                 }
                     
                                                     if(existe==0){
-                                                    res.send(temp)
-                                                    return;
+                                                    
+                                                    return res.send(temp)
                                                     }
                                                   
                     
