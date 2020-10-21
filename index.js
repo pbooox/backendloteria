@@ -165,9 +165,9 @@ io.on('connection',connected);
                     
 
                                             
-                                                if(cantjug>=2){
+                                                if(cantjug==2){
                                                     const room = io.sockets.adapter.rooms[temp];
-                                                    room.time=20;
+                                                    room.time=60;
                                                  const  intervalo= setInterval(function() {
 
                                                                 
@@ -218,32 +218,32 @@ io.on('connection',connected);
 
 
                                                             console.log('entra al segundo intervalo')
-                                                            const room = io.sockets.adapter.rooms[temp];
+                                                            const room2 = io.sockets.adapter.rooms[temp];
 
-                                                          room.time=10;
+                                                          room2.time=10;
                                                        const  intervalo2= setInterval(function() {
       
                                                                       
                                                                       
-                                                                      if (typeof room.time !== 'undefined') {
-                                                                          if (room.time <= 0) {
+                                                                      if (typeof room2.time !== 'undefined') {
+                                                                          if (room2.time <= 0) {
       
                                                                              /*  clearInterval(intervalo); */
       
                                                                               setTimeout(() => {
-                                                                                  room.time = 10;
+                                                                                  room2.time = 10;
                                                                               }, 6000);
       
                                                                               
                                                                               // emit time up
                                                                           } else {
-                                                                              room.time--;
-                                                                              io.to(temp).emit('movecard',room.time )
+                                                                              room2.time--;
+                                                                              io.to(temp).emit('movecard',room2.time )
 
 
                                                                               // emit time
                                                                           }
-                                                                          console.log(room);
+                                                                          console.log(room2);
                                                                       }
                                                                   
                                                               
