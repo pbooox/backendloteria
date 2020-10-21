@@ -114,7 +114,7 @@ io.on('connection',connected);
 
 
 
-                                                socket.on('jugadores',data,async(res)=>{
+                                                socket.on('jugadores',data=>{
 
 
 
@@ -136,7 +136,7 @@ io.on('connection',connected);
                     
                                                     if(existe==0){
                                                     
-                                                    return res.send(temp)
+                                                    console.log('Codigo incorrecto')
                                                     }
                                                   
                     
