@@ -220,7 +220,7 @@ io.on('connection',connected);
                                                             console.log('entra al segundo intervalo')
                                                             const room2 = io.sockets.adapter.rooms[temp];
 
-                                                          room2.time=10;
+                                                          room2.time=11;
                                                        const  intervalo2= setInterval(function() {
       
                                                                       
@@ -228,10 +228,10 @@ io.on('connection',connected);
                                                                       if (typeof room2.time !== 'undefined') {
                                                                           if (room2.time <= 0) {
       
-                                                                             /*  clearInterval(intervalo); */
+                                                                              clearInterval(intervalo2); 
       
                                                                               setTimeout(() => {
-                                                                                  room2.time = 10;
+                                                                                  cartas();
                                                                               }, 6000);
       
                                                                               
