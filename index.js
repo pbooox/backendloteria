@@ -136,7 +136,7 @@ io.on('connection',connected);
                     
                                                     if(existe==0){
                                                     
-                                                    console.log('Codigo incorrecto')
+                                                    console.log('Codigo Erroneo')
                                                     }
                                                   
                     
