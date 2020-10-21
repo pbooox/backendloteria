@@ -114,7 +114,7 @@ io.on('connection',connected);
 
 
 
-                                                socket.on('jugadores',data=>{
+                                                socket.on('jugadores',data,async(res)=>{
 
 
 
