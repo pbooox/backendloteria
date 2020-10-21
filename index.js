@@ -7,7 +7,7 @@ const io = require('socket.io')(server);
 app.set('port', process.env.PORT || 3000);
 
 
-server.listen(3000)
+server.listen(process.env.PORT || 3000)
 
 
 /* const PORT = 3000 */
