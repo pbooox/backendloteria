@@ -304,7 +304,7 @@ io.on('connection',connected);
 
                                                             console.log('entra al segundo intervalo')
                                                             const room2 = io.sockets.adapter.rooms[temp];
-
+                                                            room2.arrary2=[];
                                                           room2.time=6;
                                                        const  intervalo2= setInterval(function() {
       
@@ -399,10 +399,7 @@ io.on('connection',connected);
     
                                                         const room = io.sockets.adapter.rooms[data];
                                                         
-                                                            if(room.act==1){
-                                                                room.act=2;
-                                                                room.arrary2=[];
-                                                            }
+                                                          
     
                                                             room.existe2=false;
 
