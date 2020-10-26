@@ -420,7 +420,7 @@ io.on('connection',connected);
                                                                   }
                                                                   if(! room.existe2){
                                                                       room.arrary2.push(target);
-                                                                      io.to(data).emit('movecard',target);
+                                                                      io.to(data).emit('target2',target);
                                                                     clearInterval(rand);
                                                                     console.log(room.arrary2);
                                                                   }
