@@ -43,6 +43,7 @@ let room='';
 
 let existe= 0;
 let Salas = [];
+let Salaspublicas=[];
 
 let segundos=60;
 
@@ -136,7 +137,9 @@ io.on('connection',connected);
                     
                                                     if(existe==0){
                                                     
-                                                    console.log('Codigo Erroneo')
+                                                    const mensaje='Código de sala incorrecto'    
+                                                    socket.emit('eventoerror',mensaje)
+
                                                     }
                                                   
                     
@@ -165,7 +168,7 @@ io.on('connection',connected);
                     
 
                                             
-                                                if(cantjug==2){
+                                                if(cantjug==1){
                                                     const room = io.sockets.adapter.rooms[temp];
                                                     room.time=60;
                                                  const  intervalo= setInterval(function() {
@@ -211,6 +214,88 @@ io.on('connection',connected);
 
 
 
+
+                                                socket.on('publico',data=>{
+
+                                                    let salroom=data.sala
+                                                    jugadores[socket.id] = data.nombre;
+                                                    socket.username=data.nombre;
+
+                                                    Salaspublicas.push(salroom);
+                                                    socket.room=salroom;
+
+                                                 
+
+                                                  
+                                                    socket.join(salroom, (err) => {
+                                                        if(err) {
+                                                          return console.log(err);
+                                                        }
+                                                       
+                                                        /* io.to(temp).emit('mensaje', socket.username) */
+                        
+                        
+                                                       return socket.to(salroom).emit('mensaje', socket.username)
+                                                        
+                        
+                                                        })
+                                                      
+                                                           
+                        
+                                                    
+                                                        const cantjug=io.nsps['/'].adapter.rooms[salroom].length;
+                                                    console.log(`${socket.username} se ha unido a la sala: ${salroom} `)
+                        
+                                                    console.log('cantidad de jugadores: '+cantjug);
+
+
+                                                    socket.broadcast.emit ( 'cantidad' , {cantidad:cantjug,sala:salroom});
+
+    
+                                                
+                                                    if(cantjug==2){
+                                                        const room = io.sockets.adapter.rooms[salroom];
+                                                        room.time=60;
+                                                        room.act=1; // para el room.array=[] de tarjetarandom
+                                                     const  intervalo= setInterval(function() {
+    
+                                                                    
+                                                                    
+                                                                    if (typeof room.time !== 'undefined') {
+                                                                        if (room.time <= 0) {
+    
+                                                                            cartas(salroom);
+                                                                            clearInterval(intervalo);
+                                                                            
+                                                                           /*  room.time = 0; */
+                                                                            // emit time up
+                                                                        } else {
+    
+                                                                            room.time--;
+                                                                            io.to(salroom).emit('cuenta',room.time )
+    
+                                                                            
+                                                                            // emit time
+                                                                        }
+                                                                        console.log(room);
+                                                                    }
+                                                                
+                                                            
+                                                        }, 1000);
+    
+    
+                                                       
+    
+                                                    }
+
+
+
+
+
+                                                })
+
+
+
                                                     function cartas(temp){
 
 
@@ -220,7 +305,7 @@ io.on('connection',connected);
                                                             console.log('entra al segundo intervalo')
                                                             const room2 = io.sockets.adapter.rooms[temp];
 
-                                                          room2.time=11;
+                                                          room2.time=6;
                                                        const  intervalo2= setInterval(function() {
       
                                                                       
@@ -229,26 +314,27 @@ io.on('connection',connected);
                                                                           if (room2.time <= 0) {
       
                                                                              /*  clearInterval(intervalo); */
-      
+                                                                                if(room2.time==0){
+                                                                                    CartasRandom(temp);
+                                                                                }
                                                                                 room2.time--
 
-                                                                                if(room2.time==-7){
-
-                                                                                    room2.time = 11;
+                                                                                if(room2.time==-4){
+                                                                                    
+                                                                                    room2.time = 6;
                                                                                 }
 
                                                                               /* setTimeout(() => {
                                                                                   room2.time = 11;
                                                                               }, 6000); */
       
-                                                                              
-                                                                              // emit time up
+                                                                          
                                                                           } else {
                                                                               room2.time--;
                                                                               io.to(temp).emit('movecard',room2.time )
 
 
-                                                                              // emit time
+                                                                              
                                                                           }
                                                                           console.log(room2);
                                                                       }
@@ -261,6 +347,94 @@ io.on('connection',connected);
 
 
                                                     }
+
+
+
+
+                                                    socket.on('Random',data=>{
+
+                                                    const cantjug=io.nsps['/'].adapter.rooms[data].length;
+
+                                                    const room = io.sockets.adapter.rooms[data];
+
+                                                        if(cantjug==1){
+                                                            room.array=[];
+                                                             room.existe=false;
+                                                        }
+
+
+                                                        const rand= setInterval(() => {
+                                                            
+                                                            let target=0+Math.floor(11*Math.random())
+                                                       
+    
+    
+                                                            for(let i=0;i<room.array.length;i++){
+                                                                if(room.array[i] == target){
+                                                                    room.existe = true;
+                                                                    break;
+                                                                }
+                                                              }
+                                                              if(!room.existe){
+                                                                  room.array.push(target);
+                                                                socket.emit('target',target);
+                                                                clearInterval(rand);
+                                                                console.log(target);
+                                                              }
+                                                                                                               
+                                        
+                                                                    
+
+                                                        }, 200);
+                                                       
+
+
+
+                                            
+                                                    })
+
+
+                                                    function CartasRandom (data){
+
+    
+                                                        const room = io.sockets.adapter.rooms[data];
+                                                        
+                                                            if(room.act==1){
+                                                                room.act=2;
+                                                                room.arrary2=[];
+                                                            }
+    
+                                                            room.existe2=false;
+
+                                                            const rand= setInterval(() => {
+                                                                
+                                                                let target=0+Math.floor(53*Math.random())
+                                                            
+        
+        
+                                                                for(let i=0;i<room.arrary2.length;i++){
+                                                                    if(room.arrary2[i] == target){
+                                                                        room.existe2=true;
+                                                                        break;
+                                                                    }
+                                                                  }
+                                                                  if(! room.existe2){
+                                                                      room.arrary2.push(target);
+                                                                      io.to(data).emit('target2',target);
+                                                                    clearInterval(rand);
+                                                                    console.log(room.arrary2);
+                                                                  }
+                                                                                                                   
+                                            
+                                                                        
+    
+                                                            }, 200);
+                                                           
+    
+    
+    
+                                                
+                                                        }
 
 
                                             socket.on('disconnect',data=>{
