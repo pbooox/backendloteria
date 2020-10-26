@@ -331,7 +331,7 @@ io.on('connection',connected);
                                                                           
                                                                           } else {
                                                                               room2.time--;
-                                                                              io.to(temp).emit('movecard',room2.time )
+                                                                              io.to(temp).emit('movecard',{target:room2.time,estado:false} )
 
 
                                                                               
