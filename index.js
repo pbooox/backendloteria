@@ -31,7 +31,7 @@ mongoose.connection.on('connected',()=>{
 })
 
 mongoose.connection.on('error',(err)=>{
-    console.log("this is error",err)
+    console.log("error: ",err)
 })
 
 
@@ -80,12 +80,37 @@ io.on('connection',connected);
    
 
 
+
+
+                                            socket.on('envioreal',()=>{
+
+                                                console.log(Salas);
+
+                                                if(Salas.length){
+                                                    Salas.forEach(elemento => {
+                                                       
+                                                        const cantjug=io.nsps['/'].adapter.rooms[elemento].length;
+                                                        const roomm = io.sockets.adapter.rooms[elemento];
+                                              
+                                                        socket.emit ( 'cantidad' , {cantidad:cantjug,sala:roomm.nombremesa,cod:elemento});
+    
+    
+    
+                                                       });
+                                                }
+                                                       
+
+
+
+
+                                            })
+
+
                                             socket.on('jugador',data=>{
                                             
-                                        
-
-
+                                    
                                                 jugadores[socket.id] = data.nombre;
+                                                //guarda el nombre de manera global
                                                socket.username=data.nombre;
                                                 room='';
 
@@ -97,18 +122,30 @@ io.on('connection',connected);
                                                     
                                                     
                                                     }
+
+
                                                 Salas.push(room);
+
+                                                //guarda la sala de manera global
                                                 socket.room=room;
                                                 socket.join(room)
 
+
+                                                const roomm = io.sockets.adapter.rooms[room];
+                                                    roomm.tiempo=data.tiempo;
+                                                    roomm.nombremesa=data.nombresala;
+
                                                         socket.emit('join',room);
+
+                                                        const cantjug=io.nsps['/'].adapter.rooms[room].length;
+
+                                                        socket.broadcast.emit ( 'cantidad' , {cantidad:cantjug,sala:roomm.nombremesa,cod:room});
+
                                                   console.log(`${socket.username} ha creado la sala: ${room} `)
                                                   console.log('cantidad de jugadores: '+io.nsps['/'].adapter.rooms[room].length);
                                          
-                                           
 
-                               
-
+            
 
                                             })
 
@@ -223,6 +260,7 @@ io.on('connection',connected);
 
                                                     Salaspublicas.push(salroom);
                                                     socket.room=salroom;
+                                                    const roomm = io.sockets.adapter.rooms[salroom];
 
                                                  
 
@@ -249,7 +287,7 @@ io.on('connection',connected);
                                                     console.log('cantidad de jugadores: '+cantjug);
 
 
-                                                    socket.broadcast.emit ( 'cantidad' , {cantidad:cantjug,sala:salroom});
+                                                    socket.broadcast.emit ( 'cantidad' , {cantidad:cantjug,sala:roomm.nombremesa,cod:salroom});
 
     
                                                 
@@ -315,11 +353,11 @@ io.on('connection',connected);
       
                                                                              /*  clearInterval(intervalo); */
                                                                                 if(room2.time==0){
-                                                                                    CartasRandom(temp);
+                                                                                   valor(temp,room2.ale);
                                                                                 }
                                                                                 room2.time--
 
-                                                                                if(room2.time==-4){
+                                                                                if(room2.time==-5){
                                                                                     
                                                                                     room2.time = 6;
                                                                                 }
@@ -330,6 +368,11 @@ io.on('connection',connected);
       
                                                                           
                                                                           } else {
+
+
+                                                                            if(room2.time==6){
+                                                                                CartasRandom(temp);
+                                                                            }
                                                                               room2.time--;
                                                                               io.to(temp).emit('movecard',{target:room2.time,estado:false} )
 
@@ -401,11 +444,13 @@ io.on('connection',connected);
                                                         
                                                           
     
-                                                            room.existe2=false;
+                                                            
 
                                                             const rand= setInterval(() => {
                                                                 
-                                                                let target=0+Math.floor(53*Math.random())
+                                                                room.existe2=false;
+
+                                                                let target=0+Math.floor((53-room.arrary2.length)*Math.random())
                                                             
         
         
@@ -416,8 +461,10 @@ io.on('connection',connected);
                                                                     }
                                                                   }
                                                                   if(! room.existe2){
+
                                                                       room.arrary2.push(target);
-                                                                      io.to(data).emit('movecard',{target:target,estado:true});
+                                                                      room.ale=target
+                                                                     /*  io.to(data).emit('movecard',{target:target,estado:true}); */
                                                                     clearInterval(rand);
                                                                     console.log(room.arrary2);
                                                                   }
@@ -431,6 +478,12 @@ io.on('connection',connected);
     
     
                                                 
+                                                        }
+
+                                                        function valor(data,target){
+
+                                                            io.to(data).emit('movecard',{target:target,estado:true});
+
                                                         }
 
 

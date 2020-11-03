@@ -8,16 +8,18 @@ const User = mongoose.model('User');
 
 router.post('/signup',async (req,res)=>{
    
-    const {email,password} = req.body;
+  const {email,nombre,password,foto} = req.body;
 
     try{
-      const user = new User({email,password});
+      const user = new User({email,nombre,password,foto});
       await  user.save();
       const token = jwt.sign({userId:user._id},jwtkey)
       res.send({token})
 
     }catch(err){
-      return res.status(422).send(err.message)
+      const error='el Correo ya se encuentra registrado';
+      console.log(error)
+      res.send(error)
     }
     
     
@@ -55,19 +57,28 @@ router.put('/user/:id', async (req,res)=>{
 
 router.post('/signin',async (req,res)=>{
     const {email,password} = req.body
+ 
+
     if(!email || !password){
-        return res.status(422).send({error :"must provide email or password"})
-    }
+      const error='Debe ingresar el correo o contraseña'
+      res.send(error);
+      console.log(error)
+        }
     const user = await User.findOne({email})
     if(!user){
-        return res.status(422).send({error :"must provide email or password"})
-    }
+     const error='Correo o contraseña incorrecto'
+     console.log(error)
+      res.send(error); 
+        }
     try{
       await user.comparePassword(password);    
       const token = jwt.sign({userId:user._id},jwtkey)
       res.send({token})
     }catch(err){
-        return res.status(422).send({error :"must provide email or password"})
+     const error='Correo o contraseña incorrecto'
+     console.log(error)
+      res.send(error); 
+
     }
     
 
