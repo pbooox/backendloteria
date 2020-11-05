@@ -487,16 +487,93 @@ io.on('connection',connected);
                                                         }
 
 
+                                                        socket.on('Salir',data=>{
+
+                                                            delete jugadores[socket.id]
+                                                            const sala= socket.room;
+
+                                                            socket.to(sala).emit('abandonar', socket.username);
+                                                            const roomm = io.sockets.adapter.rooms[sala];
+
+                                                            // Sacar usuario del cuarto
+                                                            socket.leave(sala);
+                                                           
+                                                            if(Salas.length){
+
+                                                   
+
+                                                                if(io.nsps['/'].adapter.rooms[sala]==undefined){
+             
+                                                                 const index = Salas.indexOf(sala);
+             
+                                                                 if (index > -1) {
+             
+                                                                     Salas.splice(index, 1);
+                                                                     socket.broadcast.emit ( 'cantidad' , {cantidad:0,sala:'no hay',cod:sala});
+             
+                                                                  }
+             
+                                                             }else{
+                                                                 const cantjug=io.nsps['/'].adapter.rooms[sala].length;
+                                                                 let message=`${socket.username} abandonó la partida`
+                                                                 socket.to(sala).emit('abandonar', message)
+                                                                 
+                                                                 socket.broadcast.emit ( 'cantidad' , {cantidad:cantjug,sala:roomm.nombremesa,cod:sala});
+             
+                                                             }
+                                                         }
+                                                       
+                                                          
+                                                            
+                                                            
+            
+            
+                                                          
+                                                             
+                     
+                     
+                                                             })
+
+
                                             socket.on('disconnect',data=>{
 
                                                delete jugadores[socket.id]
-/*                                                socket.to(temp).emit('desconectados', socket.username)
- */                                                console.log("Adios "+socket.username);
-                                                socket.leave(socket.room);
+                                               const sala= socket.room;
+                                               let message=`${socket.username} se desconectó por mala conexión :(`
+
+                                               socket.to(sala).emit('abandonar', message)
+                                               console.log(socket.username + ' salió, error 404')
+                                               const roomm = io.sockets.adapter.rooms[sala];
+                                               console.log(roomm);
+                                                   
+                                                   socket.leave(sala);
+
+
+                                                   if(Salas.length){
+
+                                                   
+
+                                                   if(io.nsps['/'].adapter.rooms[sala]==undefined){
+
+                                                    const index = Salas.indexOf(sala);
+
+                                                    if (index > -1) {
+
+                                                        Salas.splice(index, 1);
+                                                        socket.broadcast.emit ( 'cantidad' , {cantidad:0,sala:'no hay',cod:sala});
+
+                                                     }
+
+                                                }else{
+                                                    const cantjug=io.nsps['/'].adapter.rooms[sala].length;
+
+                                                    socket.broadcast.emit ( 'cantidad' , {cantidad:cantjug,sala:roomm.nombremesa,cod:sala});
+
+                                                }
+                                            }
+                                              
         
-                                                
-        
-        
+                                               
                                                 })
 
 
