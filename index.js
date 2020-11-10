@@ -4,10 +4,10 @@ const mongoose = require('mongoose')
 const app = express();
 const server=require('http').Server(app);
 const io = require('socket.io')(server);
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 4000);
 
 
-server.listen(process.env.PORT || 3000)
+ server.listen(process.env.PORT || 4000)
 
 
 /* const PORT = 3000 */
@@ -27,7 +27,7 @@ mongoose.connect(mogoUrl,{
 })
 
 mongoose.connection.on('connected',()=>{
-    console.log("conectado a mongo")
+    console.log("conectado a mongo: "+ app.set('port'))
 })
 
 mongoose.connection.on('error',(err)=>{
