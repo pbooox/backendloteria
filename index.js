@@ -466,7 +466,7 @@ io.on('connection',connected);
                                                                       room.ale=target
                                                                      /*  io.to(data).emit('movecard',{target:target,estado:true}); */
                                                                     clearInterval(rand);
-                                                                    console.log(room.arrary2);
+                                                                    
                                                                   }
                                                                                                                    
                                             
@@ -583,9 +583,9 @@ io.on('connection',connected);
       
      
     
-app.get('/',requireToken,(req,res)=>{
-    res.send({id:req.user.id,email:req.user.email,nombre:req.user.nombre,foto:req.user.foto})
-})
+                        app.get('/',requireToken,(req,res)=>{
+                            res.send({id:req.user.id,email:req.user.email,nombre:req.user.nombre,foto:req.user.foto})
+                        })
 
 
 
