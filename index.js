@@ -528,7 +528,7 @@ io.on('connection',connected);
                                                                  let message=`${socket.username} abandonó la partida`
                                                                  socket.to(sala).emit('abandonar', message)
                                                                  
-                                                                 socket.broadcast.emit ( 'aumentarcantidad' , {cantidad:cantjug,sala:roomm.nombremesa,cod:sala});
+                                                                 socket.broadcast.emit ('aumentarcantidad', {cantidad:cantjug,sala:roomm.nombremesa,cod:sala});
              
                                                              }
                                                          }
@@ -570,14 +570,14 @@ io.on('connection',connected);
                                                     if (index > -1) {
 
                                                         Salas.splice(index, 1);
-                                                        socket.broadcast.emit ( 'eliminasala' , {cantidad:0,sala:'no hay',cod:sala});
+                                                        socket.broadcast.emit ('eliminasala' , {cantidad:0,sala:'no hay',cod:sala});
 
                                                      }
 
                                                 }else{
                                                     const cantjug=io.nsps['/'].adapter.rooms[sala].length;
 
-                                                    socket.broadcast.emit ( 'aumentarcantidad' , {cantidad:cantjug,sala:roomm.nombremesa,cod:sala});
+                                                    socket.broadcast.emit ('aumentarcantidad' , {cantidad:cantjug,sala:roomm.nombremesa,cod:sala});
 
                                                 }
                                             }
