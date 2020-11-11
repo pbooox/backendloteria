@@ -43,7 +43,7 @@ let room='';
 
 let existe= 0;
 let Salas = [];
-let Salaspublicas=[];
+let Salasprivadas=[];
 
 let segundos=60;
 
@@ -123,8 +123,15 @@ io.on('connection',connected);
                                                     
                                                     }
 
+                                                    if(data.estado===false){
+                                                        console.log('entra a publico');
+                                                        Salas.push(room);
+                                                    }else{
+                                                        console.log('entra a privado');
 
-                                                Salas.push(room);
+                                                        Salasprivadas.push(room);
+                                                    }
+                                                
 
                                                 //guarda la sala de manera global
                                                 socket.room=room;
@@ -132,9 +139,9 @@ io.on('connection',connected);
 
 
                                                 const roomm = io.sockets.adapter.rooms[room];
-                                                    roomm.tiempo=data.tiempo;
+                                                    roomm.tiempo=data.tiempo*60;
                                                     roomm.nombremesa=data.nombresala;
-
+                                                        console.log('tiempo enviado: '+roomm.tiempo)
                                                         socket.emit('join',room);
 
                                                         const cantjug=io.nsps['/'].adapter.rooms[room].length;
@@ -163,8 +170,8 @@ io.on('connection',connected);
                                                 
                                                 let index=0;
                                                 let temp='';
-                                                for(index; index < Salas.length; index++){
-                                                if(Salas[index] == data.codigo ){
+                                                for(index; index <Salasprivadas.length; index++){
+                                                if(Salasprivadas[index] == data.codigo ){
                                                     existe=existe+1;
                                                     temp = data.codigo
                                                     // Sí existe, fin del ciclo
@@ -207,13 +214,15 @@ io.on('connection',connected);
                                             
                                                 if(cantjug==1){
                                                     const room = io.sockets.adapter.rooms[temp];
-                                                    room.time=60;
+
+                                                    
                                                  const  intervalo= setInterval(function() {
 
+                                                                  room.minutes = Math.round((room.tiempo - 30)/60); //calcula el número de minutos
+                                                                  room.remainingSeconds = room.tiempo % 60; //calcula los segundos
                                                                 
-                                                                
-                                                                if (typeof room.time !== 'undefined') {
-                                                                    if (room.time <= 0) {
+                                                                if (typeof room.tiempo !== 'undefined') {
+                                                                    if (room.tiempo <= 0) {
 
                                                                         cartas(temp);
                                                                         clearInterval(intervalo);
@@ -222,8 +231,8 @@ io.on('connection',connected);
                                                                         // emit time up
                                                                     } else {
 
-                                                                        room.time--;
-                                                                        io.to(temp).emit('cuenta',room.time )
+                                                                        room.tiempo--;
+                                                                        io.to(temp).emit('cuenta',{minutos:room.minutes,segundo:room.remainingSeconds,seg:room.tiempo} )
 
                                                                         
                                                                         // emit time
@@ -258,7 +267,7 @@ io.on('connection',connected);
                                                     jugadores[socket.id] = data.nombre;
                                                     socket.username=data.nombre;
 
-                                                    Salaspublicas.push(salroom);
+                                                   
                                                     socket.room=salroom;
                                                     const roomm = io.sockets.adapter.rooms[salroom];
 
@@ -293,14 +302,15 @@ io.on('connection',connected);
                                                 
                                                     if(cantjug==2){
                                                         const room = io.sockets.adapter.rooms[salroom];
-                                                        room.time=60;
+                                                      
                                                         room.act=1; // para el room.array=[] de tarjetarandom
                                                      const  intervalo= setInterval(function() {
     
+                                                        room.minutes = Math.round((room.tiempo - 30)/60); //calcula el número de minutos
+                                                        room.remainingSeconds = room.tiempo % 60; //calcula los segundos
                                                                     
-                                                                    
-                                                                    if (typeof room.time !== 'undefined') {
-                                                                        if (room.time <= 0) {
+                                                                    if (typeof room.tiempo !== 'undefined') {
+                                                                        if (room.tiempo <= 0) {
     
                                                                             cartas(salroom);
                                                                             clearInterval(intervalo);
@@ -309,9 +319,9 @@ io.on('connection',connected);
                                                                             // emit time up
                                                                         } else {
     
-                                                                            room.time--;
-                                                                            io.to(salroom).emit('cuenta',room.time )
-    
+                                                                           
+                                                                            room.tiempo--;
+                                                                            io.to(salroom).emit('cuenta',{minutos:room.minutes,segundo:room.remainingSeconds,seg:room.tiempo} )
                                                                             
                                                                             // emit time
                                                                         }
