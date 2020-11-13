@@ -71,21 +71,23 @@
                                       //nombre.split(" ",1)
                                       //req.user.emails[0].value
                                       //req.user.photos[0].value
+                                      res.redirect("OAuthLogin://login"+ token);
+                                      next();
 
-                                      try{
+                                    /*   try{
                                         const user = new User({email,nombre,password,foto});
                                         await  user.save();
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                         res.redirect("OAuthLogin://login"+ token);
-                                        next();
+                                        next(); */
                                         /* res.send({token}) */
 
-                                      }catch(err){
+                                     /*  }catch(err){
                                         console.log('primer error: '+err)
                                         const error='el Correo ya se encuentra registrado';
                                         console.log(error)
                                         res.send(error)
-                                      }
+                                      } */
 
 
 
