@@ -1,51 +1,56 @@
-const express  = require('express')
-const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
-const app = express();
-const server=require('http').Server(app);
-const io = require('socket.io')(server);
-app.set('port', process.env.PORT || 4000);
+                                const express  = require('express')
+                                const bodyParser = require('body-parser')
+                                const mongoose = require('mongoose')
+                                const passport = require('passport');
+
+                                const app = express();
+
+                                app.use(passport.initialize());
+
+                                const server=require('http').Server(app);
+                                const io = require('socket.io')(server);
+                                app.set('port', process.env.PORT || 3000);
 
 
- server.listen(process.env.PORT || 4000)
+                                server.listen(process.env.PORT || 3000)
 
 
-/* const PORT = 3000 */
-const {mogoUrl} = require('./keys')
+                                /* const PORT = 3000 */
+                                const {mogoUrl} = require('./keys')
 
 
-require('./models/User');
+                                require('./models/User');
 
-const requireToken = require('./middleware/requireToken')
-const authRoutes = require('./routes/authRoutes')
-app.use(bodyParser.json())
-app.use(authRoutes)
+                                const requireToken = require('./middleware/requireToken')
+                                const authRoutes = require('./routes/authRoutes')
+                                app.use(bodyParser.json())
+                                app.use(authRoutes)
 
-mongoose.connect(mogoUrl,{
-    useNewUrlParser:true,
-    useUnifiedTopology:true
-})
+                                mongoose.connect(mogoUrl,{
+                                    useNewUrlParser:true,
+                                    useUnifiedTopology:true
+                                })
 
-mongoose.connection.on('connected',()=>{
-    console.log("conectado a mongo: "+ app.set('port'))
-})
+                                mongoose.connection.on('connected',()=>{
+                                    console.log("conectado a mongo: "+ app.set('port'))
+                                })
 
-mongoose.connection.on('error',(err)=>{
-    console.log("error: ",err)
-})
+                                mongoose.connection.on('error',(err)=>{
+                                    console.log("error: ",err)
+                                })
 
 
 
-let jugadores={};
-let clienteNo=0;
-let cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-let room='';
+                                let jugadores={};
+                                let clienteNo=0;
+                                let cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                                let room='';
 
-let existe= 0;
-let Salas = [];
-let Salasprivadas=[];
+                                let existe= 0;
+                                let Salas = [];
+                                let Salasprivadas=[];
 
-let segundos=60;
+                                let segundos=60;
 
 
 io.on('connection',connected);
