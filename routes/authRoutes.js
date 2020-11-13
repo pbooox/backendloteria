@@ -50,7 +50,7 @@
                                   }, (accessToken, refreshToken, profile, done) => {
 
                                   done(null, profile, accessToken );
-                                  
+
                                   }))
 
                                
@@ -64,7 +64,7 @@
                                     scope: ['profile', 'email'],
                                     }));
                                     // Google Oauth2 callback url
-                                    router.get('/auth/google/callback', passport.authenticate('google'), (req, res, next) => {
+                                    router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/google' }), (req, res, next) => {
                                     res.redirect("user://datos?id=" + req.user.id);
                                     });
 
