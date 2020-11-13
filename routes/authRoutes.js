@@ -71,8 +71,8 @@
                                       //nombre.split(" ",1)
                                       //req.user.emails[0].value
                                       //req.user.photos[0].value
-                                      res.redirect("OAuthLogin://login?id="+ req.user.id);
-                                     
+                                      /* res.redirect("OAuthLogin://login?id="+ req.user.id); */
+                                     res.send({nombre})
 
                                     /*   try{
                                         const user = new User({email,nombre,password,foto});
