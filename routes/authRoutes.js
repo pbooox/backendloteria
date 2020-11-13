@@ -56,16 +56,41 @@
                                
 
 
-
-
-
-
                                   router.get('/auth/google', passport.authenticate('google', {
                                     scope: ['profile', 'email'],
                                     }));
                                     // Google Oauth2 callback url
-                                    router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/google' }), (req, res, next) => {
-                                    res.redirect("user://datos?id=" + req.user.id);
+                                    router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/google' }), async(req, res, next) => {
+
+                                      const email=req.user.emails[0].value;
+                                      const nombre=req.user.name.givenName;
+                                       nombre.split(" ",1);
+                                      const password="";
+                                      const foto=req.user.photos[0].value;
+                                      //req.user.name.familyName
+                                      //nombre.split(" ",1)
+                                      //req.user.emails[0].value
+                                      //req.user.photos[0].value
+
+                                      try{
+                                        const user = new User({email,nombre,password,foto});
+                                        await  user.save();
+                                        const token = jwt.sign({userId:user._id},jwtkey)
+                                        res.redirect("OAuthLogin://login"+ token);
+                                        next();
+                                        /* res.send({token}) */
+
+                                      }catch(err){
+                                        console.log('primer error: '+err)
+                                        const error='el Correo ya se encuentra registrado';
+                                        console.log(error)
+                                        res.send(error)
+                                      }
+
+
+
+                                      
+                                    /* return res.redirect("OAuthLogin://login?id=" + req.user.id); */
                                     });
 
 
