@@ -59,7 +59,8 @@
                                   passport.use(new FacebookStrategy({
                                     clientID: "1690675411093038", // Add your clientID
                                     clientSecret: "f586453d81e7285f7e396ff228cdeaf8", // Add the secret here
-                                    callbackURL: '/auth/facebook/callback'
+                                    callbackURL: '/auth/facebook/callback',
+                                    profileFields: ['email', 'name', 'displayName', 'picture']
                                     }, (accessToken, refreshToken, profile, done) => {
   
                                     done(null, profile, accessToken );
@@ -76,8 +77,54 @@
                                     router.get('/auth/facebook', passport.authenticate('facebook'));
 
                                     router.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/auth/facebook' }), async(req, res, next) => {
+                                      const email=req.user.emails[0].value;
+                                      const nombre=req.user.name.givenName;
+                                       nombre.split(" ",1);
+                                      const password="";
+                                      const foto=req.user.photos[0].value;
 
-                                      res.send(req.user);
+
+                                      try{
+                                        const user = new User({email,nombre,password,foto});
+                                        await  user.save();
+                                        const token = jwt.sign({userId:user._id},jwtkey)
+                                     
+                                         /* res.send({token})  */
+                                         res.redirect("OAuthLogin://login?id="+token); 
+
+                                       }catch(err){
+                                      /*   console.log('primer error: '+err)
+                                        const error='el Correo ya se encuentra registrado';
+                                        console.log(error)
+                                        res.send(error) */
+
+
+
+                                        const user = await User.findOne({email})
+                                        if(!user){
+                                        const error='Correo o contraseña incorrecto'
+                                        console.log(error)
+                                          res.send(error); 
+                                            }
+                                        try{
+                                          const token = jwt.sign({userId:user._id},jwtkey)
+                                          res.redirect("OAuthLogin://login?id="+token); 
+                                        }catch(err){
+                                        const error='Correo o contraseña incorrecto'
+                                        console.log(error)
+                                          res.send(error); 
+  
+                                        }
+
+
+
+
+
+
+                                      } 
+
+
+
                                     });
 
 
