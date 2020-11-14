@@ -82,10 +82,34 @@
                                          res.redirect("OAuthLogin://login?id="+token); 
 
                                        }catch(err){
-                                        console.log('primer error: '+err)
+                                      /*   console.log('primer error: '+err)
                                         const error='el Correo ya se encuentra registrado';
                                         console.log(error)
-                                        res.send(error)
+                                        res.send(error) */
+
+
+
+                                        const user = await User.findOne({email})
+                                        if(!user){
+                                        const error='Correo o contraseña incorrecto'
+                                        console.log(error)
+                                          res.send(error); 
+                                            }
+                                        try{
+                                          const token = jwt.sign({userId:user._id},jwtkey)
+                                          res.redirect("OAuthLogin://login?id="+token); 
+                                        }catch(err){
+                                        const error='Correo o contraseña incorrecto'
+                                        console.log(error)
+                                          res.send(error); 
+  
+                                        }
+
+
+
+
+
+
                                       } 
 
 
