@@ -5,7 +5,7 @@
                                 const router = express.Router();
                                 const User = mongoose.model('User');
                                 const passport = require ('passport');
-                                const FacebookStrategy = require ('passport-facebook');
+                                const FacebookStrategy = require ('passport-facebook').Strategy;
                                 const GoogleStrategy = require ('passport-google-oauth20').Strategy;
 /*                                 const { facebook, google} = require ('../config');
  */
@@ -54,6 +54,31 @@
                                   }))
 
                                
+
+
+                                  passport.use(new FacebookStrategy({
+                                    clientID: "1690675411093038", // Add your clientID
+                                    clientSecret: "f586453d81e7285f7e396ff228cdeaf8", // Add the secret here
+                                    callbackURL: '/auth/facebook/callback'
+                                    }, (accessToken, refreshToken, profile, done) => {
+  
+                                    done(null, profile, accessToken );
+  
+                                    }))
+
+
+
+
+
+
+
+
+                                    router.get('/auth/facebook', passport.authenticate('facebook'));
+
+                                    router.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/auth/facebook' }), async(req, res, next) => {
+
+                                      res.send(req.user);
+                                    });
 
 
                                   router.get('/auth/google', passport.authenticate('google', {
