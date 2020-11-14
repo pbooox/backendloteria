@@ -126,7 +126,13 @@
 
 
                                     });
+                               
 
+                                    router.get('/política/de/privacidad',(req,res)=>{
+
+                                      res.send('sus datos estan seguros');
+
+                                    })
 
                                   router.get('/auth/google', passport.authenticate('google', {
                                     scope: ['profile', 'email'],
