@@ -128,7 +128,7 @@
                                     });
                                
 
-                                    router.get('/política/de/privacidad',(req,res)=>{
+                                    router.get('/politica/de/privacidad',(req,res)=>{
 
                                       res.send('sus datos estan seguros');
 
