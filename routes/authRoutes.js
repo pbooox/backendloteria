@@ -157,8 +157,8 @@
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                      
                                          /* res.send({token})  */
-                                         res.redirect("oauthLogin://login.io?id="+token); 
-
+                                         res.redirect("oauthLogin://login?id="+token); 
+                                         res.redirect('/')
                                        }catch(err){
                                       /*   console.log('primer error: '+err)
                                         const error='el Correo ya se encuentra registrado';
