@@ -176,6 +176,7 @@
                                         try{
                                           const token = jwt.sign({userId:user._id},jwtkey)
                                           res.redirect("OAuthLogin://login?id="+token); 
+                                          res.redirect('/')
                                         }catch(err){
                                         const error='Correo o contraseña incorrecto'
                                         console.log(error)
