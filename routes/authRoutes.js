@@ -157,7 +157,7 @@
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                      
                                          /* res.send({token})  */
-                                         res.redirect("OAuthLogin://login?id="+token); 
+                                         res.redirect("oauthLogin://login?id="+token); 
 
                                        }catch(err){
                                       /*   console.log('primer error: '+err)
