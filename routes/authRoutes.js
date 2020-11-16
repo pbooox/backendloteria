@@ -138,7 +138,7 @@
                                     scope: ['profile', 'email'],
                                     }));
                                     // Google Oauth2 callback url
-                                    router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/google' }), (req, res, next) => {
+                                    router.get('/auth/google/callback', passport.authenticate('google'), (req, res, next) => {
 
                                       const email=req.user.emails[0].value;
                                       const nombre=req.user.name.givenName;
