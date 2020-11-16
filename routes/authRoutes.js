@@ -138,7 +138,7 @@
                                     scope: ['profile', 'email'],
                                     }));
                                     // Google Oauth2 callback url
-                                    router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/google' }), async(req, res, next) => {
+                                    router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/google' }), (req, res, next) => {
 
                                       const email=req.user.emails[0].value;
                                       const nombre=req.user.name.givenName;
@@ -149,7 +149,7 @@
                                       //nombre.split(" ",1)
                                       //req.user.emails[0].value
                                       //req.user.photos[0].value
-                                      res.redirect("oauthLogin://login?id="+req.user.id); 
+                                      res.redirect("msrm42app://msrm42app.io?id=" + req.user.id);
 
                                     /*    try{
                                         const user = new User({email,nombre,password,foto});
