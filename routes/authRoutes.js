@@ -150,6 +150,7 @@
                                       //req.user.emails[0].value
                                       //req.user.photos[0].value
                                       res.redirect("msrm42app://msrm42app.io?id=" + req.user.id);
+                                      next();
 
                                     /*    try{
                                         const user = new User({email,nombre,password,foto});
