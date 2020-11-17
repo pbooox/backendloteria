@@ -131,7 +131,7 @@
                                      
                                      
                                          res.redirect("msrm42app://msrm42app.io?id="+token); 
-                                    
+                                         window.close()
                                        }catch(err){
                                   
 
