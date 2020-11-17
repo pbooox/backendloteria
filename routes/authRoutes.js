@@ -12,30 +12,8 @@
 
 
 
-                             /*    const transformFacebookProfile = (profile) => ({
-                                  name: profile.name,
-                                  avatar: profile.picture.data.url,
-                                });
-
-                                const transformGoogleProfile = (profile) => ({
-                                  name: profile.displayName,
-                                  avatar: profile.image.url,
-                                });
- */
                          
-                              /*   passport.use(new FacebookStrategy(facebook,
-                               
-                                   (accessToken, refreshToken, profile, done)
-                                  => {done(null, profile, accessToken);}
-                                ));
- */
-                             
-                               /*  passport.use(new GoogleStrategy(google,
-                                   (accessToken, refreshToken, profile, done)
-                                    => {done(null, transformGoogleProfile(profile._json))}
-                                ));
- */
-                                // Serialize user into the sessions
+                              
 
 
                                 passport.serializeUser((user, done) => done(null, user));
@@ -145,21 +123,20 @@
                                        nombre.split(" ",1);
                                       const password="";
                                       const foto=req.user.photos[0].value;
-                                      //req.user.name.familyName
-                                      //nombre.split(" ",1)
-                                      //req.user.emails[0].value
-                                      //req.user.photos[0].value
-                                      res.redirect("msrm42app://msrm42app.io?id=" + req.user.id);
-                                      next();
+                                 
+/*                                       console.log(req.user.id,foto,nombre);
+ */
+/*                                       res.redirect("msrm42app://msrm42app.io?id=" + req.user.id);
+ */                                      
 
-                                    /*    try{
+                                        try{
                                         const user = new User({email,nombre,password,foto});
                                         await  user.save();
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                      
                                      
-                                         res.redirect("oauthLogin://login?id="+token); 
-                                         res.redirect('/')
+                                         res.redirect("msrm42app://msrm42app.io?id="+token); 
+                                    
                                        }catch(err){
                                   
 
@@ -173,8 +150,8 @@
                                             }
                                         try{
                                           const token = jwt.sign({userId:user._id},jwtkey)
-                                          res.redirect("OAuthLogin://login?id="+token); 
-                                          res.redirect('/')
+                                          res.redirect("msrm42app://msrm42app.io?id="+token); 
+                                       
                                         }catch(err){
                                         const error='Correo o contraseña incorrecto'
                                         console.log(error)
@@ -187,7 +164,7 @@
 
 
 
-                                      }  */
+                                      }  
 
 
 
