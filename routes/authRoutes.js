@@ -123,11 +123,6 @@
                                        nombre.split(" ",1);
                                       const password="";
                                       const foto=req.user.photos[0].value;
-                                 
-/*                                       console.log(req.user.id,foto,nombre);
- */
-/*                                       res.redirect("msrm42app://msrm42app.io?id=" + req.user.id);
- */                                      
 
                                         try{
                                         const user = new User({email,nombre,password,foto});
