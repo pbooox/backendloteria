@@ -120,12 +120,12 @@
 
                                       const email=req.user.emails[0].value;
                                       const nombre=req.user.name.givenName;
-                                      const nuevo_nombre= nombre.split(" ",1);
+                                      nombre.split(" ",1);
                                       const password="";
                                       const foto=req.user.photos[0].value;
 
                                         try{
-                                        const user = new User({email,nuevo_nombre,password,foto});
+                                        const user = new User({email,nombre,password,foto});
                                         await  user.save();
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                      
