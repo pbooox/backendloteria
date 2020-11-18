@@ -18,7 +18,7 @@
 
                                 passport.serializeUser((user, done) => done(null, user));
 
-                                // Deserialize user from the sessions
+                          
                                 passport.deserializeUser((user, done) => done(null, user));
 
                                 passport.use(new GoogleStrategy({
@@ -66,9 +66,8 @@
                                         const user = new User({email,nombre,password,foto});
                                         await  user.save();
                                         const token = jwt.sign({userId:user._id},jwtkey)
-                                     
-                                         /* res.send({token})  */
-                                         res.redirect("OAuthLogin://login?id="+token); 
+                                        res.redirect("msrm42app://msrm42app.io?id="+token); 
+
 
                                        }catch(err){
                                       /*   console.log('primer error: '+err)
@@ -86,7 +85,8 @@
                                             }
                                         try{
                                           const token = jwt.sign({userId:user._id},jwtkey)
-                                          res.redirect("OAuthLogin://login?id="+token); 
+                                          res.redirect("msrm42app://msrm42app.io?id="+token); 
+
                                         }catch(err){
                                         const error='Correo o contraseña incorrecto'
                                         console.log(error)
@@ -115,15 +115,16 @@
                                   router.get('/auth/google', passport.authenticate('google', {
                                     scope: ['profile', 'email'],
                                     }));
-                                    // Google Oauth2 callback url
+                                
                                     router.get('/auth/google/callback', passport.authenticate('google'), async(req, res, next) => {
 
                                       const email=req.user.emails[0].value;
-                                      const nombre=req.user.name.givenName;
-                                      nombre.split(" ",1);
+                                      const nombreaux=req.user.name.givenName.split(" ",1);
                                       const password="";
                                       const foto=req.user.photos[0].value;
-
+                                      
+                                      const nombre=nombreaux+' ';
+                                      console.log(nombre)
                                         try{
                                         const user = new User({email,nombre,password,foto});
                                         await  user.save();
@@ -131,7 +132,7 @@
                                      
                                      
                                          res.redirect("msrm42app://msrm42app.io?id="+token); 
-                                         window.close()
+                                        
                                        }catch(err){
                                   
 
@@ -146,7 +147,7 @@
                                         try{
                                           const token = jwt.sign({userId:user._id},jwtkey)
                                           res.redirect("msrm42app://msrm42app.io?id="+token); 
-                                       
+                                          
                                         }catch(err){
                                         const error='Correo o contraseña incorrecto'
                                         console.log(error)
