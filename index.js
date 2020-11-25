@@ -502,6 +502,17 @@ io.on('connection',connected);
                                                         }
 
 
+
+                                                    socket.on('Emoji',()=>{
+
+                                                    const sala= socket.room;
+                                                     socket.to(sala).emit('emoji', socket.username);
+
+
+
+                                                        })
+
+
                                                         socket.on('Salir',data=>{
 
                                                             delete jugadores[socket.id]
