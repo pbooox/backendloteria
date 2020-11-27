@@ -8,7 +8,7 @@
                                 app.use(passport.initialize());
 
                                 const server=require('http').Server(app);
-                                const io = require('socket.io')(server);
+                                const io = require('socket.io')(server,{pingInterval:1000,pingTimeout:3000});
                                 app.set('port', process.env.PORT || 3000);
 
 
@@ -146,6 +146,16 @@ io.on('connection',connected);
                                                 const roomm = io.sockets.adapter.rooms[room];
                                                     roomm.tiempo=data.tiempo*60;
                                                     roomm.nombremesa=data.nombresala;
+                                                    roomm.arrary_cartas_restauradas=[];
+                                                    roomm.tarjeta_aleatorio=[0,1,2,3,4,5,6,7,8,9,10,11];
+                                                    
+                                                    const cartas_juego=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,
+                                                    39,40,41,42,43,44,45,46,47,48,49,50,51,52,53
+                                                    ]
+
+                                                    cartas_juego.sort(function() { return Math.random() - 0.5 });
+                                                    roomm.juego_tablero=cartas_juego;
+
                                                         console.log('tiempo enviado: '+roomm.tiempo)
                                                         socket.emit('join',room);
 
@@ -217,7 +227,7 @@ io.on('connection',connected);
                     
 
                                             
-                                                if(cantjug==1){
+                                                if(cantjug==2){
                                                     const room = io.sockets.adapter.rooms[temp];
 
                                                     
@@ -242,7 +252,7 @@ io.on('connection',connected);
                                                                         
                                                                         // emit time
                                                                     }
-                                                                    console.log(room);
+                                                                    /* console.log(room); */
                                                                 }
                                                             
                                                         
@@ -330,8 +340,12 @@ io.on('connection',connected);
                                                                             
                                                                             // emit time
                                                                         }
-                                                                        console.log(room);
-                                                                    }
+
+                                                                        if(io.nsps['/'].adapter.rooms[salroom]==undefined){
+                                                                            clearInterval(intervalo);
+                                                                        }
+/*                                                                         console.log(room);
+ */                                                                    }
                                                                 
                                                             
                                                         }, 1000);
@@ -357,7 +371,7 @@ io.on('connection',connected);
 
                                                             console.log('entra al segundo intervalo')
                                                             const room2 = io.sockets.adapter.rooms[temp];
-                                                            room2.arrary2=[];
+                                                            
                                                           room2.time=6;
                                                        const  intervalo2= setInterval(function() {
       
@@ -394,6 +408,9 @@ io.on('connection',connected);
 
                                                                               
                                                                           }
+                                                                          if(io.nsps['/'].adapter.rooms[temp]==undefined){
+                                                                            clearInterval(intervalo2);
+                                                                        }
                                                                           console.log(room2);
                                                                       }
                                                                   
@@ -411,40 +428,17 @@ io.on('connection',connected);
 
                                                     socket.on('Random',data=>{
 
-                                                    const cantjug=io.nsps['/'].adapter.rooms[data].length;
 
                                                     const room = io.sockets.adapter.rooms[data];
 
-                                                        if(cantjug==1){
-                                                            room.array=[];
-                                                             room.existe=false;
-                                                        }
-
-
-                                                        const rand= setInterval(() => {
-                                                            
-                                                            let target=0+Math.floor(11*Math.random())
-                                                       
-    
-    
-                                                            for(let i=0;i<room.array.length;i++){
-                                                                if(room.array[i] == target){
-                                                                    room.existe = true;
-                                                                    break;
-                                                                }
-                                                              }
-                                                              if(!room.existe){
-                                                                  room.array.push(target);
-                                                                socket.emit('target',target);
-                                                                clearInterval(rand);
-                                                                console.log(target);
-                                                              }
-                                                                                                               
-                                        
-                                                                    
-
-                                                        }, 200);
-                                                       
+                                                    const valor=room.tarjeta_aleatorio;
+                                                    valor.sort(function() { return Math.random() - 0.5 });
+                                                     const eliminado=valor.shift();   
+                                                        room.arrary_cartas_restauradas.push({id:socket.id,valor:eliminado});
+                                                     console.log('array: '+valor);
+                                                      console.log('eliminado: '+eliminado);
+                                                            socket.emit('target',eliminado);
+                                                     
 
 
 
@@ -457,37 +451,19 @@ io.on('connection',connected);
     
                                                         const room = io.sockets.adapter.rooms[data];
                                                         
-                                                          
-    
-                                                            
+                                                        const valor= room.juego_tablero;
+                                                        if(valor.length==0){
 
-                                                            const rand= setInterval(() => {
-                                                                
-                                                                room.existe2=false;
+                                                            return;
+                                                        }else{
+                                                        
 
-                                                                let target=0+Math.floor((53-room.arrary2.length)*Math.random())
-                                                            
-        
-        
-                                                                for(let i=0;i<room.arrary2.length;i++){
-                                                                    if(room.arrary2[i] == target){
-                                                                        room.existe2=true;
-                                                                        break;
-                                                                    }
-                                                                  }
-                                                                  if(! room.existe2){
+                                                        const eliminado=valor.shift();
+                                                            console.log('eliminado en juego: '+eliminado);
+                                                            room.ale=eliminado;
+                                                       /*  io.to(data).emit('movecard',{target:eliminado,estado:true}); */
 
-                                                                      room.arrary2.push(target);
-                                                                      room.ale=target
-                                                                     /*  io.to(data).emit('movecard',{target:target,estado:true}); */
-                                                                    clearInterval(rand);
-                                                                    
-                                                                  }
-                                                                                                                   
-                                            
-                                                                        
-    
-                                                            }, 200);
+                                                        }
                                                            
     
     
@@ -541,9 +517,28 @@ io.on('connection',connected);
              
                                                              }else{
                                                                  const cantjug=io.nsps['/'].adapter.rooms[sala].length;
-                                                                 let message=`${socket.username} abandonó la partida`
+
+                                                                 roomm.arrary_cartas_restauradas.map(data=>{
+
+                                                                    if(data.id==socket.id){
+
+                                                                        roomm.tarjeta_aleatorio.push(data.valor);
+                                                                        console.log('eliminado y restaurado: '+ data.valor);
+                                                                        let index = roomm.arrary_cartas_restauradas.findIndex(item => item.id ===socket.id);
+
+                                                                        if(index > -1){
+                                                                            roomm.arrary_cartas_restauradas.splice(index, 1);
+                                                                          }            
+                                                                    }
+
+                                                                 })
+
+                                                                 console.log('nuevo: '+ roomm.tarjeta_aleatorio)
+
+                                                                 let message=`${socket.username} abandonó la partida 🤨`
                                                                  socket.to(sala).emit('abandonar', message)
                                                                  
+
                                                                  socket.broadcast.emit ('aumentarcantidad', {cantidad:cantjug,sala:roomm.nombremesa,cod:sala});
              
                                                              }
@@ -565,9 +560,10 @@ io.on('connection',connected);
 
                                                delete jugadores[socket.id]
                                                const sala= socket.room;
-                                               let message=`${socket.username} se desconectó por mala conexión :(`
+                                               let message=`${socket.username} se desconectó por mala conexión 😢`
 
                                                socket.to(sala).emit('abandonar', message)
+                                               socket.emit('usuariodesconectado');
                                                console.log(socket.username + ' salió, error 404')
                                                const roomm = io.sockets.adapter.rooms[sala];
                                                console.log(roomm);
