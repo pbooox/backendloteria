@@ -8,7 +8,7 @@
                                 app.use(passport.initialize());
 
                                 const server=require('http').Server(app);
-                                const io = require('socket.io')(server,{pingInterval:1000,pingTimeout:3000});
+                                const io = require('socket.io')(server,{pingInterval:1000,pingTimeout:6000});
                                 app.set('port', process.env.PORT || 3000);
 
 
@@ -237,7 +237,7 @@ io.on('connection',connected);
                                                                   room.remainingSeconds = room.tiempo % 60; //calcula los segundos
                                                                 
                                                                 if (typeof room.tiempo !== 'undefined') {
-                                                                    if (room.tiempo <= -2) {
+                                                                    if (room.tiempo == -2) {
 
                                                                         cartas(temp);
                                                                         clearInterval(intervalo);
@@ -325,7 +325,7 @@ io.on('connection',connected);
                                                         room.remainingSeconds = room.tiempo % 60; //calcula los segundos
                                                                     
                                                                     if (typeof room.tiempo !== 'undefined') {
-                                                                        if (room.tiempo<= -2) {
+                                                                        if (room.tiempo==-2) {
     
                                                                             cartas(salroom);
                                                                             clearInterval(intervalo);
