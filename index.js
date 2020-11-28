@@ -237,7 +237,7 @@ io.on('connection',connected);
                                                                   room.remainingSeconds = room.tiempo % 60; //calcula los segundos
                                                                 
                                                                 if (typeof room.tiempo !== 'undefined') {
-                                                                    if (room.tiempo <= 0) {
+                                                                    if (room.remainingSeconds== 0) {
 
                                                                         cartas(temp);
                                                                         clearInterval(intervalo);
