@@ -41,44 +41,23 @@
 
 
 
-                                let jugadores={};
+                                var jugadores={};
                                 let clienteNo=0;
-                                let cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                                let room='';
+                                var cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                                var room='';
 
-                                let existe= 0;
-                                let Salas = [];
-                                let Salasprivadas=[];
+                                
+                                var Salas = [];
+                                var Salasprivadas=[];
 
                                 let segundos=60;
 
 
-io.on('connection',connected);
+                                io.on('connection',connected);
 
 
 
 
-/* function secondPassed(temp) {
-
-    const minutes = Math.trunc(segundos/60); //calcula el número de minutos
-    const remainingSeconds = segundos % 60; //calcula los segundos restantes
-    //si los segundos usan sólo un dígito, añadimos un cero a la izq
-
-    const dat={minutes:minutes,remainingSeconds:remainingSeconds}
-  
-
-
-    socket.to(temp).emit('cuenta',dat )
-    if (segundos == 0) { 
-      
-      socket.to(temp).emit('cuenta',segundos)
-
-
-
-    } else { 
-      segundos--; 
-    } 
-  }  */
 
 
                     function connected(socket){
@@ -147,15 +126,20 @@ io.on('connection',connected);
                                                     roomm.tiempo=data.tiempo*60;
                                                     roomm.nombremesa=data.nombresala;
                                                     roomm.arrary_cartas_restauradas=[];
-                                                    roomm.tarjeta_aleatorio=[0,1,2,3,4,5,6,7,8,9,10,11];
+                                                    roomm.figuras=data.figuras;
+                                                    const tarjeta_aleatorio=[0,1,2,3,4,5,6,7,8,9,10,11];
                                                     
                                                     const cartas_juego=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,
                                                     39,40,41,42,43,44,45,46,47,48,49,50,51,52,53
                                                     ]
 
                                                     cartas_juego.sort(function() { return Math.random() - 0.5 });
-                                                    roomm.juego_tablero=cartas_juego;
 
+                                                   
+                                                    tarjeta_aleatorio.sort(function() { return Math.random() - 0.5 });
+
+                                                    roomm.juego_tablero=cartas_juego;
+                                                    roomm.escoge_carton= tarjeta_aleatorio;
                                                         console.log('tiempo enviado: '+roomm.tiempo)
                                                         socket.emit('join',room);
 
@@ -185,6 +169,7 @@ io.on('connection',connected);
                                                 
                                                 let index=0;
                                                 let temp='';
+                                                var existe= 0;
                                                 for(index; index <Salasprivadas.length; index++){
                                                 if(Salasprivadas[index] == data.codigo ){
                                                     existe=existe+1;
@@ -238,13 +223,18 @@ io.on('connection',connected);
                                                                 
                                                                 if (typeof room.tiempo !== 'undefined') {
                                                                     if (room.tiempo == 0) {
+                                                                        console.log('llegó a 0 seconds: '+room.remainingSeconds)
 
+                                                                        console.log('llegó a 0 room.tiempo: '+room.tiempo)
                                                                         cartas(temp);
                                                                         clearInterval(intervalo);
                                                                         
                                                                        /*  room.time = 0; */
                                                                         // emit time up
                                                                     } else {
+                                                                        console.log('room.tiempo: '+room.tiempo);
+                                                                        console.log('room.minutes: '+room.minutes);
+                                                                        console.log('room.remainseconds: '+room.remainingSeconds)
 
                                                                         room.tiempo--;
                                                                         io.to(temp).emit('cuenta',{minutos:room.minutes,segundo:room.remainingSeconds,seg:room.tiempo} )
@@ -326,7 +316,9 @@ io.on('connection',connected);
                                                                     
                                                                     if (typeof room.tiempo !== 'undefined') {
                                                                         if (room.tiempo==0) {
-    
+                                                                            console.log('llegó a 0 seconds: '+room.remainingSeconds)
+
+                                                                            console.log('llegó a 0 room.tiempo: '+room.tiempo)
                                                                             cartas(salroom);
                                                                             clearInterval(intervalo);
                                                                             
@@ -334,7 +326,9 @@ io.on('connection',connected);
                                                                             // emit time up
                                                                         } else {
     
-                                                                           
+                                                                            console.log('room.tiempo: '+room.tiempo);
+                                                                        console.log('room.minutes: '+room.minutes);
+                                                                        console.log('room.remainseconds: '+room.remainingSeconds)
                                                                             room.tiempo--;
                                                                             io.to(salroom).emit('cuenta',{minutos:room.minutes,segundo:room.remainingSeconds,seg:room.tiempo} )
                                                                             
@@ -431,8 +425,8 @@ io.on('connection',connected);
 
                                                     const room = io.sockets.adapter.rooms[data];
 
-                                                    const valor=room.tarjeta_aleatorio;
-                                                    valor.sort(function() { return Math.random() - 0.5 });
+                                                    const valor=room.escoge_carton;
+
                                                      const eliminado=valor.shift();   
                                                         room.arrary_cartas_restauradas.push({id:socket.id,valor:eliminado});
                                                      console.log('array: '+valor);
@@ -488,6 +482,17 @@ io.on('connection',connected);
 
                                                         })
 
+                                                        socket.on('figura',()=>{
+
+                                                            const sala= socket.room;
+                                                            const roomm = io.sockets.adapter.rooms[sala];
+
+                                                             socket.emit('cantidad_figura',roomm.figuras);
+        
+        
+        
+                                                                })
+
 
                                                         socket.on('Salir',data=>{
 
@@ -522,7 +527,7 @@ io.on('connection',connected);
 
                                                                     if(data.id==socket.id){
 
-                                                                        roomm.tarjeta_aleatorio.push(data.valor);
+                                                                        roomm.escoge_carton.push(data.valor);
                                                                         console.log('eliminado y restaurado: '+ data.valor);
                                                                         let index = roomm.arrary_cartas_restauradas.findIndex(item => item.id ===socket.id);
 
@@ -533,7 +538,7 @@ io.on('connection',connected);
 
                                                                  })
 
-                                                                 console.log('nuevo: '+ roomm.tarjeta_aleatorio)
+                                                                 console.log('nuevo: '+ roomm.escoge_carton)
 
                                                                  let message=`${socket.username} abandonó la partida 🤨`
                                                                  socket.to(sala).emit('abandonar', message)
