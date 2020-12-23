@@ -127,6 +127,7 @@
                                                     roomm.nombremesa=data.nombresala;
                                                     roomm.arrary_cartas_restauradas=[];
                                                     roomm.figuras=data.figuras;
+                                                   
                                                     const tarjeta_aleatorio=[0,1,2,3,4,5,6,7,8,9,10,11];
                                                     
                                                     const cartas_juego=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,
@@ -158,6 +159,15 @@
 
 
 
+                                            socket.on('nombremesa',()=>{
+                                                const sala= socket.room;
+                                                const roomm = io.sockets.adapter.rooms[sala];
+                                               
+                                                 socket.emit('recibonombre',roomm.nombremesa)   
+
+
+                                            })
+
                                                 socket.on('jugadores',data=>{
 
 
@@ -170,6 +180,10 @@
                                                 let index=0;
                                                 let temp='';
                                                 var existe= 0;
+
+                                                let index2=0;
+                                               
+                                                var existe2= 0;
                                                 for(index; index <Salasprivadas.length; index++){
                                                 if(Salasprivadas[index] == data.codigo ){
                                                     existe=existe+1;
@@ -178,8 +192,18 @@
                                                     break;
                                                 }
                                                 }
+
+
+                                                for(index2; index2 <Salas.length; index2++){
+                                                    if(Salas[index] == data.codigo ){
+                                                        existe2=existe2+1;
+                                                        temp = data.codigo
+                                                        // Sí existe, fin del ciclo
+                                                        break;
+                                                    }
+                                                    }
                     
-                                                    if(existe==0){
+                                                    if(existe==0||existe2==0){
                                                     
                                                     const mensaje='Código de sala incorrecto'    
                                                     socket.emit('eventoerror',mensaje)
