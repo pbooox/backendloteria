@@ -197,8 +197,8 @@
                                                     /* io.to(temp).emit('mensaje', socket.username) */
                     
                     
-                                                   return socket.to(temp).emit('mensaje', socket.username)
-                                                    
+                                                  socket.to(temp).emit('mensaje', socket.username)
+                                                  socket.emit('salaexistente')
                     
                                                     })
                                                   
@@ -213,41 +213,9 @@
 
                                             
                                                 if(cantjug==2){
-                                                    const room = io.sockets.adapter.rooms[temp];
+                                                 
 
-                                                    
-                                                 const  intervalo= setInterval(function() {
-
-                                                                  room.minutes = Math.round((room.tiempo - 30)/60); //calcula el número de minutos
-                                                                  room.remainingSeconds = room.tiempo % 60; //calcula los segundos
-                                                                
-                                                                if (typeof room.tiempo !== 'undefined') {
-                                                                    if (room.tiempo == 0) {
-                                                                        console.log('llegó a 0 seconds: '+room.remainingSeconds)
-
-                                                                        console.log('llegó a 0 room.tiempo: '+room.tiempo)
-                                                                        cartas(temp);
-                                                                        clearInterval(intervalo);
-                                                                        
-                                                                       /*  room.time = 0; */
-                                                                        // emit time up
-                                                                    } else {
-                                                                        console.log('room.tiempo: '+room.tiempo);
-                                                                        console.log('room.minutes: '+room.minutes);
-                                                                        console.log('room.remainseconds: '+room.remainingSeconds)
-
-                                                                        room.tiempo--;
-                                                                        io.to(temp).emit('cuenta',{minutos:room.minutes,segundo:room.remainingSeconds,seg:room.tiempo} )
-
-                                                                        
-                                                                        // emit time
-                                                                    }
-                                                                    /* console.log(room); */
-                                                                }
-                                                            
-                                                        
-                                                    }, 1000);
-
+                                                        juego(temp);
 
                                                    
 
@@ -306,6 +274,20 @@
     
                                                 
                                                     if(cantjug==2){
+                                                        
+                                                        juego(salroom);
+                                                       
+    
+                                                    }
+
+
+
+
+
+                                                })
+
+                                                    function juego(salroom){
+
                                                         const room = io.sockets.adapter.rooms[salroom];
                                                       
                                                         room.act=1; // para el room.array=[] de tarjetarandom
@@ -344,17 +326,8 @@
                                                             
                                                         }, 1000);
     
-    
-                                                       
-    
+
                                                     }
-
-
-
-
-
-                                                })
-
 
 
                                                     function cartas(temp){
