@@ -180,7 +180,7 @@
                                                 
                                                 let index=0;
                                                 let temp='';
-                                                existe= 0; // Esta variable debe ser declarado en la sala
+                                             
 
                                              
                                                 for(index; index <Salasprivadas.length; index++){
@@ -213,9 +213,9 @@
                                                     /* io.to(temp).emit('mensaje', socket.username) */
                     
                     
-                                                  socket.emit('salaexistente')
-                                                 return socket.to(temp).emit('mensaje', socket.username)
-
+                                                  
+                                                  socket.to(temp).emit('mensaje', socket.username) 
+                                                  return socket.emit('salaexistente')
                                                     })
                                                   
                                                        
