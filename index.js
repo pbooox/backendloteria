@@ -179,7 +179,7 @@
                                                 // Verificar si existe el cuarto
                                                 
                                                 let index=0;
-                                                var temp='';
+                                                let temp='';
                                              
 
                                              
@@ -214,8 +214,8 @@
                     
                     
                                                   
-                                                  socket.to(temp).emit('mensaje', socket.username) 
-                                                  return socket.emit('salaexistente')
+                                                  socket.to(socket.room).emit('mensaje', socket.username) 
+                                                  socket.emit('salaexistente')
                                                     })
                                                   
                                                        
