@@ -213,9 +213,9 @@
                                                     /* io.to(temp).emit('mensaje', socket.username) */
                     
                     
-                                                  socket.to(temp).emit('mensaje', socket.username)
                                                   socket.emit('salaexistente')
-                    
+                                                 return socket.to(temp).emit('mensaje', socket.username)
+
                                                     })
                                                   
                                                        
