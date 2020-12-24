@@ -199,7 +199,7 @@
                                                     
                                                     const mensaje='Código de sala incorrecto'    
                                                     socket.emit('eventoerror',mensaje)
-
+                                                    return;
                                                     }
                                                   
                     
