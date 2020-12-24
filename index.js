@@ -46,7 +46,7 @@
                                 var cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                                 var room='';
 
-                                
+                                var existe= 0;
                                 var Salas = [];
                                 var Salasprivadas=[];
 
@@ -180,7 +180,7 @@
                                                 
                                                 let index=0;
                                                 let temp='';
-                                                var existe= 0;
+                                                existe= 0; // Esta variable debe ser declarado en la sala
 
                                              
                                                 for(index; index <Salasprivadas.length; index++){
