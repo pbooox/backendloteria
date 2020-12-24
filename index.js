@@ -179,7 +179,7 @@
                                                 // Verificar si existe el cuarto
                                                 
                                                 let index=0;
-                                                let temp='';
+                                                var temp='';
                                              
 
                                              
