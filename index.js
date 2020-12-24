@@ -177,12 +177,8 @@
                                                     socket.username=data.nombre;
                     
                                                 // Verificar si existe el cuarto
-                                                
                                                 let index=0;
                                                 let temp='';
-                                             
-
-                                             
                                                 for(index; index <Salasprivadas.length; index++){
                                                 if(Salasprivadas[index] == data.codigo ){
                                                     existe=existe+1;
@@ -214,7 +210,7 @@
                     
                     
                                                   
-                                                  socket.to(socket.room).emit('mensaje', socket.username) 
+                                                  socket.to(temp).emit('mensaje', socket.username) 
                                                   socket.emit('salaexistente')
                                                     })
                                                   
