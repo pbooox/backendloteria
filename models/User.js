@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {Schema} =mongoose;
 const bcrypt = require('bcrypt')
 const userSchema = new mongoose.Schema({
     email:{
@@ -15,7 +16,14 @@ const userSchema = new mongoose.Schema({
             },
     password:{
         type:String
-    }
+    },
+    maices:[{
+
+        type:Schema.Types.ObjectId,
+        ref:'Maiz',
+        autopopulate: true
+
+    }]
 })
 
 userSchema.pre('save',function(next){
@@ -55,5 +63,13 @@ userSchema.methods.comparePassword = function(candidatePassword) {
     })
 
 }
+
+
+
+2
+3
+4
+5
+
 
 mongoose.model('User',userSchema);

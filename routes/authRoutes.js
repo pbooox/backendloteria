@@ -4,6 +4,9 @@
                                 const {jwtkey} = require('../keys')
                                 const router = express.Router();
                                 const User = mongoose.model('User');
+                                const Maiz = mongoose.model('Maiz');
+                                const requireToken = require('../middleware/requireToken')
+
                                 const passport = require ('passport');
                                 const FacebookStrategy = require ('passport-facebook').Strategy;
                                 const GoogleStrategy = require ('passport-google-oauth20').Strategy;
@@ -127,7 +130,18 @@
                                       console.log(nombre)
                                         try{
                                         const user = new User({email,nombre,password,foto});
-                                        await  user.save();
+                                        await  user.save(async function(){
+
+                                          const maiz=new Maiz({
+                                            amarillo:'0',
+                                            morado:'0',
+                                            blanco:'0',
+                                            rojo:'0',
+                                            user:user._id
+                                          });
+                                           await maiz.save();
+
+                                        });
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                      
                                      
@@ -176,12 +190,25 @@
 
 
                                   router.post('/signup',async (req,res)=>{
-                                    
-                                    const {email,nombre,password,foto} = req.body;
+                                
 
+                                    const {email,nombre,password,foto} = req.body;
                                       try{
                                         const user = new User({email,nombre,password,foto});
-                                        await  user.save();
+                                       
+                                        await  user.save(async function(){
+
+                                          const maiz=new Maiz({
+                                            amarillo:'0',
+                                            morado:'0',
+                                            blanco:'0',
+                                            rojo:'0',
+                                            user:user._id
+                                          });
+                                           await maiz.save();
+
+                                        });
+                                        
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                         res.send({token})
 
@@ -194,6 +221,78 @@
                                       
                                   })
 
+                                  router.get('/maiz/:id',(req,res)=>{
+
+                                  
+                                    const user = {_id:req.params.id}
+
+                                    Maiz.find({user:user})
+                                    .exec(function (err, maices) {
+                                      if (err) return handleError(maices);
+                                      console.log(maices[0].amarillo)
+                                      res.send(maices);
+                                    });                            
+
+
+
+                                   })
+
+
+                                   router.put('/editar/maiz/:id', async (req,res)=>{
+                                    
+
+                                    var amarillo,morado,blanco,rojo;
+
+                                    var condition={_id:req.params.id};
+                               
+                                    var operacion=req.body.color;
+
+                                      amarillo=req.body.amarillo;
+                                     morado=req.body.morado;
+                                      blanco=req.body.blanco;
+                                      rojo=req.body.rojo;
+                                    console.log(operacion);
+
+                                    if(operacion=="morado"){
+                                      console.log('entra al morado')
+                                       amarillo=amarillo-6;
+                                       morado=morado+1;
+                                    }
+
+                                    if(operacion=="blanco"){
+                                       morado=morado-6;
+                                       blanco=blanco+1;
+                                    }
+
+                                    if(operacion=="rojo"){
+                                       blanco=blanco-6
+                                       rojo=rojo+1;
+                                    }
+
+
+
+                                    const dato={
+                                      amarillo,
+                                      blanco,                                     
+                                      morado,
+                                      rojo
+                                  
+                                    }
+
+
+
+                                    try{
+
+                                      
+                                     await  Maiz.update(condition,dato);
+                                    res.send(dato); 
+
+                                    }catch(err){
+                                      return res.status(422).send(err.message)
+                                    }
+                                    
+                                    
+                                  })
 
                                   router.put('/user/:id', async (req,res)=>{
                                     

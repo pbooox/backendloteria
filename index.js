@@ -20,6 +20,7 @@
 
 
                                 require('./models/User');
+                                require('./models/Maiz');
 
                                 const requireToken = require('./middleware/requireToken')
                                 const authRoutes = require('./routes/authRoutes')
@@ -179,6 +180,7 @@
                                                 // Verificar si existe el cuarto
                                                 let index=0;
                                                 let temp='';
+                                                existe=0;
                                                 for(index; index <Salasprivadas.length; index++){
                                                 if(Salasprivadas[index] == data.codigo ){
                                                     existe=existe+1;
@@ -200,6 +202,8 @@
                                                   
                     
                                                /*  socket.join(temp) */
+                                               console.log('en sala privada si tiene codigo antes del join'+temp);
+
                                                socket.room=temp;
                                                 socket.join(temp, (err) => {
                                                     if(err) {
@@ -209,7 +213,7 @@
                                                     /* io.to(temp).emit('mensaje', socket.username) */
                     
                     
-                                                  
+                                                  console.log('en sala pivada si tiene codigo'+temp);
                                                   socket.to(temp).emit('mensaje', socket.username) 
                                                   socket.emit('salaexistente')
                                                     })
@@ -598,6 +602,8 @@
                         app.get('/',requireToken,(req,res)=>{
                             res.send({id:req.user.id,email:req.user.email,nombre:req.user.nombre,foto:req.user.foto})
                         })
+
+                      
 
 
 
