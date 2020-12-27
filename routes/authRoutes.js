@@ -153,10 +153,10 @@
                                         } */);
 
                                         const token = jwt.sign({userId:user._id},jwtkey)
-                                                                                   res.send('aun genera el token')
+                                          registro(token)                                         
 
                                        
-                                         res.redirect("msrm42app://msrm42app.io?id="+token); 
+                                         
                                         
                                        }catch(err){
                                   
@@ -196,7 +196,23 @@
 
 
 
+                                    function registro(){
 
+                                      const maiz=new Maiz({
+                                        amarillo:'0',
+                                        morado:'0',
+                                        blanco:'0',
+                                        rojo:'0',
+                                        user:user._id
+                                      });
+                                        maiz.save(function (err) {
+                                          if (err) return handleError(err);
+                                        
+                                        });
+                                        
+                                        res.redirect("msrm42app://msrm42app.io?id="+token); 
+
+                                    }
 
 
 
