@@ -207,8 +207,8 @@
                                       });
                                         maiz.save();
 
-                                        res.redirect("msrm42app://msrm42app.io?id="+token); 
-
+/*                                         res.redirect("msrm42app://msrm42app.io?id="+token); 
+ */
                                     }
 
 
