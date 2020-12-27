@@ -130,7 +130,7 @@
                                       console.log(nombre)
                                         try{
                                         const user = new User({email,nombre,password,foto});
-                                        await  user.save( function(err){
+                                        await  user.save( /* function(err){
 
                                             if(err){
                                               res.send('si hay error')
@@ -150,7 +150,7 @@
                                             }
                                           
 
-                                        });
+                                        } */);
 
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                                                                    res.send('aun genera el token')
