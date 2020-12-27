@@ -130,21 +130,26 @@
                                       console.log(nombre)
                                         try{
                                         const user = new User({email,nombre,password,foto});
-                                        await  user.save(async function(){
+                                        await  user.save(async (error)=>{
 
-                                          const maiz=new Maiz({
-                                            amarillo:'0',
-                                            morado:'0',
-                                            blanco:'0',
-                                            rojo:'0',
-                                            user:user._id
-                                          });
-                                           await maiz.save();
+                                            if(error){
+                                              return;
+                                            }else{
+                                              const maiz=new Maiz({
+                                                amarillo:'0',
+                                                morado:'0',
+                                                blanco:'0',
+                                                rojo:'0',
+                                                user:user._id
+                                              });
+                                               await maiz.save();
+                                            }
+                                          
 
                                         });
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                      
-                                     
+                                       
                                          res.redirect("msrm42app://msrm42app.io?id="+token); 
                                         
                                        }catch(err){
@@ -196,18 +201,23 @@
                                       try{
                                         const user = new User({email,nombre,password,foto});
                                        
-                                        await  user.save(async function(){
+                                        await  user.save(async (error)=>{
 
-                                          const maiz=new Maiz({
-                                            amarillo:'0',
-                                            morado:'0',
-                                            blanco:'0',
-                                            rojo:'0',
-                                            user:user._id
-                                          });
-                                           await maiz.save();
+                                          if(error){
+                                            return;
+                                          }else{
+                                            const maiz=new Maiz({
+                                              amarillo:'0',
+                                              morado:'0',
+                                              blanco:'0',
+                                              rojo:'0',
+                                              user:user._id
+                                            });
+                                             await maiz.save();
+                                          }
+                                        
 
-                                        });
+                                      });
                                         
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                         res.send({token})
