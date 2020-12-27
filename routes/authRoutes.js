@@ -130,7 +130,7 @@
                                       console.log(nombre)
                                         try{
                                         const user = new User({email,nombre,password,foto});
-                                        await  user.save(async (error)=>{
+                                        await  user.save( (error)=>{
 
                                             if(error){
                                               return;
@@ -142,7 +142,7 @@
                                                 rojo:'0',
                                                 user:user._id
                                               });
-                                               await maiz.save();
+                                                maiz.save();
                                             }
                                           
 
@@ -201,7 +201,7 @@
                                       try{
                                         const user = new User({email,nombre,password,foto});
                                        
-                                        await  user.save(async (error)=>{
+                                        await  user.save((error)=>{
 
                                           if(error){
                                             return;
@@ -213,7 +213,7 @@
                                               rojo:'0',
                                               user:user._id
                                             });
-                                             await maiz.save();
+                                              maiz.save();
                                           }
                                         
 
