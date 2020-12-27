@@ -130,7 +130,7 @@
                                       console.log(nombre)
                                         try{
                                         const user = new User({email,nombre,password,foto});
-                                        await  user.save( /* function(err){
+                                        let guarda= await  user.save( /* function(err){
 
                                             if(err){
                                               res.send('si hay error')
@@ -151,12 +151,21 @@
                                           
 
                                         } */);
-/* 
+
+                                        if(guarda){
+                                          const maiz=new Maiz({
+                                            amarillo:'0',
+                                            morado:'0',
+                                            blanco:'0',
+                                            rojo:'0',
+                                            user:user._id
+                                          });
+                                           await maiz.save();
+                                        }
                                         const token = jwt.sign({userId:user._id},jwtkey)
-                                          registro(token)                                         
- */
-                                       
-                                         
+                                                                                   
+
+                                       res.redirect("msrm42app://msrm42app.io?id="+token); 
                                         
                                        }catch(err){
                                   
@@ -196,20 +205,7 @@
 
 
 
-                                    function registro(token){
 
-                                      const maiz=new Maiz({
-                                        amarillo:'0',
-                                        morado:'0',
-                                        blanco:'0',
-                                        rojo:'0',
-                                        user:user._id
-                                      });
-                                        maiz.save();
-
-/*                                         res.redirect("msrm42app://msrm42app.io?id="+token); 
- */
-                                    }
 
 
 
