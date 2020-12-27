@@ -130,7 +130,7 @@
                                       console.log(nombre)
                                         try{
                                         const user = new User({email,nombre,password,foto});
-                                        await  user.save( function(err){
+                                          user.save( function(err){
 
                                             if(err){
                                               return handleError(err);
