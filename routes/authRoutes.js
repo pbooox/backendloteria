@@ -133,6 +133,7 @@
                                         await  user.save( function(err){
 
                                             if(err){
+                                              res.send('si hay error')
                                               return handleError(err);
                                             }else{
                                               const maiz=new Maiz({
@@ -144,16 +145,18 @@
                                               });
                                                 maiz.save(function (err) {
                                                   if (err) return handleError(err);
-                                                  const token = jwt.sign({userId:user._id},jwtkey)
-                                     
-                                       
-                                                  res.redirect("msrm42app://msrm42app.io?id="+token); 
+                                                
                                                 });
                                             }
                                           
 
                                         });
-                                        
+
+                                        const token = jwt.sign({userId:user._id},jwtkey)
+                                                                                   res.send('aun genera el token')
+
+                                       
+                                         res.redirect("msrm42app://msrm42app.io?id="+token); 
                                         
                                        }catch(err){
                                   
