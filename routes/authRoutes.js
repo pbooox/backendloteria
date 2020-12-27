@@ -196,7 +196,7 @@
 
 
 
-                                    function registro(){
+                                    function registro(token){
 
                                       const maiz=new Maiz({
                                         amarillo:'0',
@@ -205,11 +205,8 @@
                                         rojo:'0',
                                         user:user._id
                                       });
-                                        maiz.save(function (err) {
-                                          if (err) return handleError(err);
-                                        
-                                        });
-                                        
+                                        maiz.save();
+
                                         res.redirect("msrm42app://msrm42app.io?id="+token); 
 
                                     }
