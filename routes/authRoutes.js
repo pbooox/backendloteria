@@ -151,10 +151,10 @@
                                           
 
                                         } */);
-
+/* 
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                           registro(token)                                         
-
+ */
                                        
                                          
                                         
