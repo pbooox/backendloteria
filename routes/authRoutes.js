@@ -130,7 +130,26 @@
                                       console.log(nombre)
                                         try{
                                         const user = new User({email,nombre,password,foto});
-                                        await  user.save();
+                                        await  user.save( function(err){
+
+                                            if(err){
+                                              return handleError(err);
+                                            }else{
+                                              const maiz=new Maiz({
+                                                amarillo:'0',
+                                                morado:'0',
+                                                blanco:'0',
+                                                rojo:'0',
+                                                user:user._id
+                                              });
+                                                maiz.save(function (err) {
+                                                  if (err) return handleError(err);
+                                                
+                                                });
+                                            }
+                                          
+
+                                        });
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                      
                                        
