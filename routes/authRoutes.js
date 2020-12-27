@@ -143,14 +143,16 @@
                                                 user:user._id
                                               });
                                                 maiz.save();
+
+                                                const token = jwt.sign({userId:user._id},jwtkey)
+                                     
+                                       
+                                         res.redirect("msrm42app://msrm42app.io?id="+token); 
                                             }
                                           
 
                                         });
-                                        const token = jwt.sign({userId:user._id},jwtkey)
-                                     
-                                       
-                                         res.redirect("msrm42app://msrm42app.io?id="+token); 
+                                        
                                         
                                        }catch(err){
                                   
