@@ -130,27 +130,11 @@
                                       console.log(nombre)
                                         try{
                                         const user = new User({email,nombre,password,foto});
-                                        await  user.save( (error)=>{
-
-                                            if(error){
-                                              return;
-                                            }
-                                          
-
-                                        });
-                                        const maiz=new Maiz({
-                                          amarillo:'0',
-                                          morado:'0',
-                                          blanco:'0',
-                                          rojo:'0',
-                                          user:user._id
-                                        });
-                                          maiz.save();
-
-                                          const token = jwt.sign({userId:user._id},jwtkey)
-                               
-                                 
-                                   res.redirect("msrm42app://msrm42app.io?id="+token); 
+                                        await  user.save();
+                                        const token = jwt.sign({userId:user._id},jwtkey)
+                                     
+                                       
+                                         res.redirect("msrm42app://msrm42app.io?id="+token); 
                                         
                                        }catch(err){
                                   
