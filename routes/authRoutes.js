@@ -134,25 +134,23 @@
 
                                             if(error){
                                               return;
-                                            }else{
-                                              const maiz=new Maiz({
-                                                amarillo:'0',
-                                                morado:'0',
-                                                blanco:'0',
-                                                rojo:'0',
-                                                user:user._id
-                                              });
-                                                maiz.save();
-
-                                                const token = jwt.sign({userId:user._id},jwtkey)
-                                     
-                                       
-                                         res.redirect("msrm42app://msrm42app.io?id="+token); 
                                             }
                                           
 
                                         });
-                                        
+                                        const maiz=new Maiz({
+                                          amarillo:'0',
+                                          morado:'0',
+                                          blanco:'0',
+                                          rojo:'0',
+                                          user:user._id
+                                        });
+                                          maiz.save();
+
+                                          const token = jwt.sign({userId:user._id},jwtkey)
+                               
+                                 
+                                   res.redirect("msrm42app://msrm42app.io?id="+token); 
                                         
                                        }catch(err){
                                   
