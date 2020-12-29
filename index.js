@@ -21,6 +21,7 @@
 
                                 require('./models/User');
                                 require('./models/Maiz');
+                                require('./models/Premio');
 
                                 const requireToken = require('./middleware/requireToken')
                                 const authRoutes = require('./routes/authRoutes')

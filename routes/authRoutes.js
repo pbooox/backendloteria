@@ -5,6 +5,8 @@
                                 const router = express.Router();
                                 const User = mongoose.model('User');
                                 const Maiz = mongoose.model('Maiz');
+                                const Premio = mongoose.model('Premio');
+
                                 const requireToken = require('../middleware/requireToken')
 
                                 const passport = require ('passport');
@@ -130,27 +132,7 @@
                                       console.log(nombre)
                                         try{
                                         const user = new User({email,nombre,password,foto});
-                                        let guarda= await  user.save( /* function(err){
-
-                                            if(err){
-                                              res.send('si hay error')
-                                              return handleError(err);
-                                            }else{
-                                              const maiz=new Maiz({
-                                                amarillo:'0',
-                                                morado:'0',
-                                                blanco:'0',
-                                                rojo:'0',
-                                                user:user._id
-                                              });
-                                                maiz.save(function (err) {
-                                                  if (err) return handleError(err);
-                                                
-                                                });
-                                            }
-                                          
-
-                                        } */);
+                                        let guarda= await  user.save();
 
                                         if(guarda){
                                           const maiz=new Maiz({
@@ -216,24 +198,23 @@
                                       try{
                                         const user = new User({email,nombre,password,foto});
                                        
-                                        await  user.save((error)=>{
-
-                                          if(error){
-                                            return;
-                                          }else{
-                                            const maiz=new Maiz({
-                                              amarillo:'0',
-                                              morado:'0',
-                                              blanco:'0',
-                                              rojo:'0',
-                                              user:user._id
-                                            });
-                                              maiz.save();
-                                          }
+                                       let guarda2= await  user.save();
                                         
 
-                                      });
-                                        
+
+                                        if(guarda2){
+                                          const maiz=new Maiz({
+                                            amarillo:'0',
+                                            morado:'0',
+                                            blanco:'0',
+                                            rojo:'0',
+                                            user:user._id
+                                          });
+                                           await maiz.save();
+                                        }
+
+
+
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                         res.send({token})
 
@@ -246,6 +227,96 @@
                                       
                                   })
 
+
+
+                                  router.post(('/compra'),async(req,res)=>{
+
+                                    console.log('entra para la compra')
+                                    const {foto,descripcion,fecha,departamento,color,user}=req.body;
+
+
+                                    try {
+                                      const premio = new Premio({foto,descripcion,fecha,departamento,color,user});
+                                       console.log(premio);
+                                        await  premio.save();
+
+                                      res.send(premio);
+
+
+
+                                    } catch (error) {
+                                      console.log('no se pudo guardar el premio')
+                                    }
+
+
+                          
+                                  })
+
+
+
+                                  router.put('/actualiza/compra/:id',async(req,res)=>{
+
+                                    
+                                    const condition={_id:req.params.id};                              
+                                     let morado=0,amarillo=0,blanco=0,rojo=0;
+                                      let cupon=0,maiz=0,operacion='';
+
+                                       cupon=req.body.cupon;
+                                       maiz=req.body.maiz;
+                                        operacion=req.body.color;
+
+                                       amarillo=req.body.amarillo;
+                                      morado=req.body.morado;
+                                       blanco=req.body.blanco;
+                                       rojo=req.body.rojo;
+                                      
+ 
+                                     if(operacion=="morado" && morado>maiz && cupon>0 ){
+                                       console.log('entra');
+                                      morado=morado-maiz;
+                                     }
+ 
+                                     if(operacion=="blanco" && blanco>maiz && cupon>0){
+                                      console.log('entra');
+                                      blanco=blanco-maiz;
+                                     }
+ 
+                                     if(operacion=="rojo" && rojo>maiz && cupon>0){
+                                      console.log('entra');
+                                        rojo=rojo-maiz;
+                                     }
+ 
+                                     if(operacion=="amarillo" && amarillo>maiz && cupon>0){
+                                      console.log('entra  en amarillo: '+maiz);
+                                      
+                                     amarillo=amarillo-maiz;
+                                   }
+
+ 
+                                     const dato={
+                                       amarillo,
+                                       blanco,                                     
+                                       morado,
+                                       rojo
+                                   
+                                     }
+ 
+ 
+ 
+                                     try{
+ 
+                                       
+                                      await  Maiz.update(condition,dato);
+                                      res.send(dato); 
+ 
+                                     }catch(err){
+                                       return console.log(err); 
+                                     }
+
+
+                                  })
+
+
                                   router.get('/maiz/:id',(req,res)=>{
 
                                   
@@ -253,8 +324,8 @@
 
                                     Maiz.find({user:user})
                                     .exec(function (err, maices) {
-                                      if (err) return handleError(maices);
-                                      console.log(maices[0].amarillo)
+                                      if (err) return console.log(err);
+                                      
                                       res.send(maices);
                                     });                            
 
@@ -266,11 +337,11 @@
                                    router.put('/editar/maiz/:id', async (req,res)=>{
                                     
 
-                                    var amarillo,morado,blanco,rojo;
+                                    let amarillo=0,morado=0,blanco=0,rojo=0;
 
-                                    var condition={_id:req.params.id};
+                                    let condition={_id:req.params.id};
                                
-                                    var operacion=req.body.color;
+                                    let operacion=req.body.color;
 
                                       amarillo=req.body.amarillo;
                                      morado=req.body.morado;
@@ -278,18 +349,18 @@
                                       rojo=req.body.rojo;
                                     console.log(operacion);
 
-                                    if(operacion=="morado"){
+                                    if(operacion=="morado" && amarillo>6 ){
                                       console.log('entra al morado')
                                        amarillo=amarillo-6;
                                        morado=morado+1;
                                     }
 
-                                    if(operacion=="blanco"){
+                                    if(operacion=="blanco" &&morado>6){
                                        morado=morado-6;
                                        blanco=blanco+1;
                                     }
 
-                                    if(operacion=="rojo"){
+                                    if(operacion=="rojo" && blanco>6){
                                        blanco=blanco-6
                                        rojo=rojo+1;
                                     }
