@@ -334,6 +334,23 @@
                                    })
 
 
+                                   router.get('/premios/:id',(req,res)=>{
+
+                                  
+                                    const user = {_id:req.params.id}
+
+                                    Premio.find({user:user})
+                                    .exec(function (err, maices) {
+                                      if (err) return console.log(err);
+                                      
+                                      res.send(maices);
+                                    });                            
+
+
+
+                                   })
+
+
                                    router.put('/editar/maiz/:id', async (req,res)=>{
                                     
 
