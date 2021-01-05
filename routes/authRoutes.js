@@ -6,8 +6,10 @@
                                 const User = mongoose.model('User');
                                 const Maiz = mongoose.model('Maiz');
                                 const Premio = mongoose.model('Premio');
-
+                                const multer = require('multer');
+                                const fs = require("fs");
                                 const requireToken = require('../middleware/requireToken')
+                                const bodyParser = require('body-parser')
 
                                 const passport = require ('passport');
                                 const FacebookStrategy = require ('passport-facebook').Strategy;
@@ -15,11 +17,16 @@
 /*                                 const { facebook, google} = require ('../config');
  */
 
+                           
 
+                                    const upload = multer({ 
+                                      dest: "upload/",
+                                    });
+                                                            
+                                    router.use(express.static('upload'))
 
-                         
-                              
-
+                                    router.use(bodyParser.urlencoded({ extended: true }))
+                                    router.use(bodyParser.json({ limit: '15MB' }))
 
                                 passport.serializeUser((user, done) => done(null, user));
 
@@ -407,13 +414,98 @@
                                     
                                   })
 
-                                  router.put('/user/:id', async (req,res)=>{
+
+                                  router.put('/ganar/maiz/:id', async (req,res)=>{
+                                    console.log('se invoca')
+
+                                    let amarillo=0,morado=0,blanco=0,rojo=0,maiz=0;
+
+                                    let condition={_id:req.params.id};
+                               
+                                    let operacion=req.body.color;
                                     
 
+                                      amarillo=req.body.amarillo;
+                                     morado=req.body.morado;
+                                      blanco=req.body.blanco;
+                                      rojo=req.body.rojo;
+                                      maiz=req.body.maiz;
+                                    
+
+                                    if(operacion=="morado"){
+                                      
+                                       morado=morado+1;
+                                    }
+
+                                    if(operacion=="blanco" ){
+                                 
+                                       blanco=blanco+1;
+                                    }
+
+                                    if(operacion=="rojo"){
+                                
+                                       rojo=rojo+1;
+                                    }
+
+                                    if(operacion=="amarillo"){
+                                    
+                                      amarillo=amarillo+1;
+                                   }
+
+                                    const dato={
+                                      amarillo,
+                                      blanco,                                     
+                                      morado,
+                                      rojo
+                                  
+                                    }
+
+
+
+                                    try{
+
+                                      
+                                     await  Maiz.update(condition,dato);
+                                    res.send(dato); 
+
+                                    }catch(err){
+                                      return res.status(422).send(err.message)
+                                    }
+                                    
+                                    
+                                  })
+
+
+
+
+
+
+
+                                  router.put('/user/:id',async (req,res)=>{
+                                    
+                                    
+                                   let cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                                   let rename='';
+
+                                    for(let i=1;i<=5;i++){
+
+                                      rename+=cadena.charAt(Math.floor(Math.random() * cadena.length));
+                                      
+                                      
+                                      }
+
+                                      let file='./upload'+'/'+rename+'.png';
+
+                                   fs.writeFile(file, req.body.foto, 'base64', (err) => {
+                                      if (err) throw err
+                               
+                                    })
+
+                                  
                                     
                                     var condition={_id:req.params.id};
-
-                                    const {email,nombre,foto} = req.body;
+                                    const foto=rename+'.png';
+                                    const {email,nombre} = req.body;
                                     const dato={
                                       email,
                                       nombre,
@@ -421,7 +513,7 @@
                                   
                                     }
 
-
+                                  
 
                                     try{
 
