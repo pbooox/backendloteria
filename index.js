@@ -171,7 +171,14 @@
 
 
                                             socket.on('nombremesa',()=>{
+
+                                                
                                                 const sala= socket.room;
+                                                if(io.nsps['/'].adapter.rooms[sala]==undefined){
+                                                console.log('entra al cerrar')
+
+                                                    return;
+                                                   } 
                                                 const roomm = io.sockets.adapter.rooms[sala];
                                                
                                                  socket.emit('recibonombre',{mesa:roomm.nombremesa,estado_mesa:roomm.estado_sala})   

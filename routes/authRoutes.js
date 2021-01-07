@@ -134,9 +134,18 @@
                                       const nombreaux=req.user.name.givenName.split(" ",1);
                                       const password="";
                                       const foto=req.user.photos[0].value;
-                                      
-                                      const nombre=nombreaux+' ';
+                                      let nombre="";
+
+                                      if( nombreaux.toString().length>9){
+
+                                       nombre= nombreaux.toString().substr(0,9)
+
+                                      }else{
+                                        nombre=nombreaux+' ';
+
+                                      }
                                       console.log(nombre)
+                                      
                                         try{
                                         const user = new User({email,nombre,password,foto});
                                         let guarda= await  user.save();
