@@ -183,6 +183,9 @@
                                                 socket.on('jugadores',data=>{
 
                                                     if(io.nsps['/'].adapter.rooms[data.codigo]==undefined){
+                                                        const mensaje='Código de sala incorrecto'    
+                                                        socket.emit('eventoerror',mensaje)
+
                                                         return;
                                                        } 
 
@@ -191,7 +194,7 @@
 
 
 
-                                                    if(cantjug>2){
+                                                    if(cantjug>3){
                                                         const mensaje1='Sala llena.'  
                                                        
                                                         socket.emit('eventoerror',mensaje1)       
@@ -291,11 +294,13 @@
 
                                                     let salroom=data.sala
                                                     if(io.nsps['/'].adapter.rooms[salroom]==undefined){
+                                                        const mensaje1='Sala Eliminada.'  
+                                                         socket.emit('lleno',mensaje1) 
                                                         return;
                                                        } 
 
                                                     const cantjug=io.nsps['/'].adapter.rooms[salroom].length;
-                                                    if(cantjug>1){
+                                                    if(cantjug>3){
                                                         const mensaje1='Sala llena.'  
 
                                                          socket.emit('lleno',mensaje1) 
