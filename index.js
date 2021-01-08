@@ -574,6 +574,21 @@
                                             
                                                     })
 
+
+                                                    socket.on('sabertiempo',()=>{
+
+                                                        const sala= socket.room;
+
+                                                        if(io.nsps['/'].adapter.rooms[sala]==undefined){
+                                                            return;
+                                                           } 
+                                                    const roomm = io.sockets.adapter.rooms[sala];
+                                                
+                                                    roomm.tiempo
+                                                    socket.emit('tiempodevuelto',roomm.tiempo)
+
+                                                    });
+
                                                     
                                                     socket.on('Ganador',(data)=>{
 
@@ -633,10 +648,13 @@
 
 
 
-                                                    socket.on('Emoji',()=>{
+                                                    socket.on('Emoji',(emoji)=>{
 
                                                     const sala= socket.room;
-                                                     socket.to(sala).emit('emoji', socket.username);
+                                                    if(io.nsps['/'].adapter.rooms[sala]==undefined){
+                                                        return;
+                                                       } 
+                                                     socket.to(sala).emit('emoji', {nombre:socket.username,emojii:emoji});
 
 
 
@@ -645,6 +663,9 @@
                                                         socket.on('figura',()=>{
 
                                                             const sala= socket.room;
+                                                            if(io.nsps['/'].adapter.rooms[sala]==undefined){
+                                                                return;
+                                                               } 
                                                             const roomm = io.sockets.adapter.rooms[sala];
 
                                                              socket.emit('cantidad_figura',roomm.figuras);
