@@ -427,18 +427,16 @@
                                   router.put('/ganar/maiz/:id', async (req,res)=>{
                                     console.log('se invoca')
 
-                                    let amarillo=0,morado=0,blanco=0,rojo=0,maiz=0;
 
                                     let condition={_id:req.params.id};
                                
                                     let operacion=req.body.color;
                                     
 
-                                      amarillo=req.body.amarillo;
-                                     morado=req.body.morado;
-                                      blanco=req.body.blanco;
-                                      rojo=req.body.rojo;
-                                      maiz=req.body.maiz;
+                                     let amarillo=req.body.amarillo;
+                                    let morado=req.body.morado;
+                                   let   blanco=req.body.blanco;
+                                    let  rojo=req.body.rojo;
                                     
 
                                     if(operacion=="morado"){

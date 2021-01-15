@@ -156,8 +156,9 @@
 
                                                         const cantjug=io.nsps['/'].adapter.rooms[room].length;
 
+                                                        if(data.estado===false){
                                                         socket.broadcast.emit ( 'cantidad' , {cantidad:cantjug,sala:roomm.nombremesa,cod:room,es:true});
-
+                                                        }
                                                   console.log(`${socket.username} ha creado la sala: ${room} `)
                                                   console.log('cantidad de jugadores: '+io.nsps['/'].adapter.rooms[room].length);
                                                 
