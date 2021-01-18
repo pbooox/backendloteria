@@ -163,7 +163,7 @@
                                           });
                                            await maiz.save();
 
-                                           const maiz=new Maiz2({
+                                           const maiz2=new Maiz2({
                                             amarillo:'0',
                                             morado:'0',
                                             blanco:'0',
