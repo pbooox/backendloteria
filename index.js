@@ -151,7 +151,7 @@
                                                 //guarda la sala de manera global
                                                 socket.room=room;
                                                 socket.join(room)
-
+                                                    console.log('estrellas: '+data.estrellas)
                                                    
                                                 const roomm = io.sockets.adapter.rooms[room];
                                                     roomm.tiempo=data.tiempo*60;
@@ -161,6 +161,7 @@
                                                     roomm.estado_sala=data.estado;
                                                     roomm.color=data.color;
                                                      roomm.fondo=data.fondo;
+                                                     roomm.cantidad_maiz=data.estrellas;
                                                     roomm.pasadas=0;
                                                     const tarjeta_aleatorio=[0,1,2,3,4,5,6,7,8,9,10,11];
                                                     
@@ -629,8 +630,8 @@
                                                       
                                                  
 
-                                                     socket.to(sala).emit('loteria',{nombre:socket.username,foto:data.foto,ganador:false,color:room.color});//enviar el mensaje del ganador a todos menos al ganador XD
-                                                             socket.emit('loteria',{nombre:socket.username,foto:data.foto,ganador:true,color:room.color})
+                                                     socket.to(sala).emit('loteria',{nombre:socket.username,foto:data.foto,ganador:false,color:room.color,cantidad_estrellas:0});//enviar el mensaje del ganador a todos menos al ganador XD
+                                                             socket.emit('loteria',{nombre:socket.username,foto:data.foto,ganador:true,color:room.color,cantidad_estrellas:room.cantidad_maiz})
                                                      io.of('/').in(sala).clients((error, socketIds) => { if (error) throw error; socketIds.forEach(socketId => io.sockets.sockets[socketId].leave(sala)); }); 
  
     

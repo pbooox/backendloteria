@@ -311,22 +311,22 @@
                                        rojo=req.body.rojo;
                                       
  
-                                     if(operacion=="morado" && morado>maiz && cupon>0 ){
+                                     if(operacion=="morado" && morado>=maiz && cupon>0 ){
                                        console.log('entra');
                                       morado=morado-maiz;
                                      }
  
-                                     if(operacion=="blanco" && blanco>maiz && cupon>0){
+                                     if(operacion=="blanco" && blanco>=maiz && cupon>0){
                                       console.log('entra');
                                       blanco=blanco-maiz;
                                      }
  
-                                     if(operacion=="rojo" && rojo>maiz && cupon>0){
+                                     if(operacion=="rojo" && rojo>=maiz && cupon>0){
                                       console.log('entra');
                                         rojo=rojo-maiz;
                                      }
  
-                                     if(operacion=="amarillo" && amarillo>maiz && cupon>0){
+                                     if(operacion=="amarillo" && amarillo>=maiz && cupon>0){
                                       console.log('entra  en amarillo: '+maiz);
                                       
                                      amarillo=amarillo-maiz;
@@ -410,7 +410,6 @@
 
                                    router.put('/editar/maiz2/:id', async (req,res)=>{
                                     
-
                                     let amarillo=0,morado=0,blanco=0,rojo=0;
 
                                     let condition={_id:req.params.id};
@@ -423,18 +422,18 @@
                                       rojo=req.body.rojo;
                                     console.log(operacion);
 
-                                    if(operacion=="morado" && amarillo>6 ){
+                                    if(operacion=="morado" && amarillo>5 ){
                                       console.log('entra al morado')
                                        amarillo=amarillo-6;
                                        morado=morado+1;
                                     }
 
-                                    if(operacion=="blanco" &&morado>6){
+                                    if(operacion=="blanco" &&morado>5){
                                        morado=morado-6;
                                        blanco=blanco+1;
                                     }
 
-                                    if(operacion=="rojo" && blanco>6){
+                                    if(operacion=="rojo" && blanco>5){
                                        blanco=blanco-6
                                        rojo=rojo+1;
                                     }
@@ -479,25 +478,26 @@
                                    let   blanco=req.body.blanco;
                                     let  rojo=req.body.rojo;
                                     
+                                    let  cantidad=req.body.cantidad;
 
                                     if(operacion=="morado"){
                                       
-                                       morado=morado+1;
+                                       morado=morado+cantidad;
                                     }
 
                                     if(operacion=="blanco" ){
                                  
-                                       blanco=blanco+1;
+                                       blanco=blanco+cantidad;
                                     }
 
                                     if(operacion=="rojo"){
                                 
-                                       rojo=rojo+1;
+                                       rojo=rojo+cantidad;
                                     }
 
                                     if(operacion=="amarillo"){
                                     
-                                      amarillo=amarillo+1;
+                                      amarillo=amarillo+cantidad;
                                    }
 
                                     const dato={
@@ -508,22 +508,71 @@
                                   
                                     }
 
+                                    const dato2={
+                                      amarillo
+                                    }
+
 
 
                                     try{
 
                                       
-                                     await  Maiz.update(condition,dato);//estrellas
-                                     await Maiz2.update(condition,amarillo)//maices
+                                await  Maiz.update(condition,dato);//estrellas
+
+                               
+                          
+                                   
+                               
+                               
                                     res.send(dato); 
 
                                     }catch(err){
+                                      console.log(err);
                                       return res.status(422).send(err.message)
                                     }
                                     
                                     
                                   })
 
+
+
+                                  router.put('/ganar/maiz2/:id', async (req,res)=>{
+                                    console.log('se invoca el ganar maiz 2')
+
+
+                                    let condition={_id:req.params.id};
+                               
+                                    let operacion=req.body.color;
+                                    
+
+                                     let amarillo=req.body.amarillo;
+                            
+                                    if(operacion=="amarillo"){
+                                    
+                                      amarillo=amarillo+1;
+                                   }
+
+                                    const dato={
+                                      amarillo
+                         
+                                  
+                                    }
+
+
+                                    try{
+
+                                                
+                                     await Maiz2.update(condition,{$set:{amarillo:amarillo}})//maices
+                                 
+                                    res.send(dato); 
+
+                                    }catch(err){
+                                      console.log(err);
+                                      return res.status(422).send(err.message)
+                                    }
+                                    
+                                    
+                                  })
 
 
 
