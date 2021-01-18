@@ -8,7 +8,7 @@
                                 app.use(passport.initialize());
 
                                 const server=require('http').Server(app);
-                                const io = require('socket.io')(server,{pingInterval:1000,pingTimeout:30000});
+                                const io = require('socket.io')(server,{pingInterval:1000,pingTimeout:50000});
                                 app.set('port', process.env.PORT || 3000);
 
 
@@ -76,13 +76,34 @@
                                                     Salas.forEach(elemento => {
                                                        
                                                         if(io.nsps['/'].adapter.rooms[elemento]==="undefined"){
+
+                                                            const index2 = Salas.indexOf(elemento);
+             
+                                                                             if (index2 > -1) {
+                         
+                                                                                 Salas.splice(index, 1);
+
+                                                                              }
                                                             return;
+                                                        }else{
+
+                                                            try {
+                                                                const cantjug=io.nsps['/'].adapter.rooms[elemento].length;
+                                                                const roomm = io.sockets.adapter.rooms[elemento];
+        
+                                                                socket.emit ( 'cantidad' , {cantidad:cantjug,sala:roomm.nombremesa,cod:elemento,es:true,color:roomm.color,fondo:roomm.fondo});
+            
+                                                            } catch (error) {
+                                                                return;
+                                                            }
+                                                             
+                                                           
+
                                                         }
-                                                        const cantjug=io.nsps['/'].adapter.rooms[elemento].length;
-                                                        const roomm = io.sockets.adapter.rooms[elemento];
-                                              
-                                                        socket.emit ( 'cantidad' , {cantidad:cantjug,sala:roomm.nombremesa,cod:elemento,es:true});
-    
+
+
+                                                  
+                                                       
     
     
                                                        });
@@ -129,7 +150,7 @@
                                                 socket.room=room;
                                                 socket.join(room)
 
-
+                                                   
                                                 const roomm = io.sockets.adapter.rooms[room];
                                                     roomm.tiempo=data.tiempo*60;
                                                     roomm.nombremesa=data.nombresala;
@@ -137,6 +158,7 @@
                                                     roomm.figuras=data.figuras;
                                                     roomm.estado_sala=data.estado;
                                                     roomm.color=data.color;
+                                                     roomm.fondo=data.fondo;
                                                     roomm.pasadas=0;
                                                     const tarjeta_aleatorio=[0,1,2,3,4,5,6,7,8,9,10,11];
                                                     
@@ -157,7 +179,7 @@
                                                         const cantjug=io.nsps['/'].adapter.rooms[room].length;
 
                                                         if(data.estado===false){
-                                                        socket.broadcast.emit ( 'cantidad' , {cantidad:cantjug,sala:roomm.nombremesa,cod:room,es:true});
+                                                        socket.broadcast.emit ( 'cantidad' , {cantidad:cantjug,sala:roomm.nombremesa,cod:room,es:true,color:roomm.color,fondo:roomm.fondo});
                                                         }
                                                   console.log(`${socket.username} ha creado la sala: ${room} `)
                                                   console.log('cantidad de jugadores: '+io.nsps['/'].adapter.rooms[room].length);
@@ -176,7 +198,6 @@
                                                 
                                                 const sala= socket.room;
                                                 if(io.nsps['/'].adapter.rooms[sala]==undefined){
-                                                console.log('entra al cerrar')
 
                                                     return;
                                                    } 
@@ -302,7 +323,7 @@
 
                                                     let salroom=data.sala
                                                     if(io.nsps['/'].adapter.rooms[salroom]==undefined){
-                                                        const mensaje1='Sala Eliminada.'  
+                                                        const mensaje1='Sala En Mantenimiento.'  
                                                          socket.emit('lleno',mensaje1) 
                                                         return;
                                                        } 
@@ -402,7 +423,10 @@
                                                     function juego(salroom){
 
                                                         const room = io.sockets.adapter.rooms[salroom];
-                                                      
+                                                        if(io.nsps['/'].adapter.rooms[salroom]==undefined){
+
+                                                            return;
+                                                           } 
                                                         room.act=1; // para el room.array=[] de tarjetarandom
                                                      const  intervalo= setInterval(function() {
                                                         
@@ -470,6 +494,8 @@
                                                         
                                                         if(io.nsps['/'].adapter.rooms[temp]==undefined){
                                                             //si llegara a pasar se podria mostrar un mensaje.
+                                                            io.to(temp).emit('sinjugador')
+
                                                             return;
                                                            } 
 
@@ -599,9 +625,7 @@
                                                            } 
                                                         const room = io.sockets.adapter.rooms[sala];
                                                       
-                                                        if(room.color=="undefined"){
-                                                            return;
-                                                        }
+                                                 
 
                                                      socket.to(sala).emit('loteria',{nombre:socket.username,foto:data.foto,ganador:false,color:room.color});//enviar el mensaje del ganador a todos menos al ganador XD
                                                              socket.emit('loteria',{nombre:socket.username,foto:data.foto,ganador:true,color:room.color})
@@ -616,9 +640,7 @@
                                                             return;
                                                            } 
                                                         const room = io.sockets.adapter.rooms[data];
-                                                        if(room.juego_tablero==="undefined"){
-                                                            return;
-                                                        }
+                                                   
                                                         const valor= room.juego_tablero;
                                                         console.log('tamaño de arreglo: '+valor.length);
                                                         if(valor.length===0){
@@ -642,7 +664,9 @@
                                                         }
 
                                                         function valor(data,target){
-
+                                                            if(io.nsps['/'].adapter.rooms[data]==undefined){
+                                                                return;
+                                                               } 
                                                             io.to(data).emit('movecard',{target:target,estado:true});
 
                                                         }
@@ -680,7 +704,11 @@
 
                                                             delete jugadores[socket.id]
                                                             const sala= socket.room;
+                                                            if(io.nsps['/'].adapter.rooms[sala]==undefined){
+                                                                return;
+                                                               } 
 
+                                                               console.log(socket.username+' abandonó la partida')
                                                             socket.to(sala).emit('abandonar', socket.username);
                                                             const roomm = io.sockets.adapter.rooms[sala];
 
@@ -790,6 +818,9 @@
 
                                                delete jugadores[socket.id]
                                                const sala= socket.room;
+                                               if(io.nsps['/'].adapter.rooms[sala]==undefined){
+                                                return;
+                                               } 
                                                let message=`${socket.username} se desconectó por mala conexión 😢`
 
                                                socket.to(sala).emit('abandonar', message)
