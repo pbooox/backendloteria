@@ -21,6 +21,8 @@
 
                                 require('./models/User');
                                 require('./models/Maiz');
+                                require('./models/Maiz2');
+
                                 require('./models/Premio');
 
                                 const requireToken = require('./middleware/requireToken')

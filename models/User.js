@@ -17,10 +17,17 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String
     },
-    maices:[{
+    maiz:[{
 
         type:Schema.Types.ObjectId,
         ref:'Maiz',
+        autopopulate: true
+
+    }],
+    maiz2:[{
+
+        type:Schema.Types.ObjectId,
+        ref:'Maiz2',
         autopopulate: true
 
     }]

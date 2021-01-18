@@ -5,6 +5,8 @@
                                 const router = express.Router();
                                 const User = mongoose.model('User');
                                 const Maiz = mongoose.model('Maiz');
+                                const Maiz2 = mongoose.model('Maiz2');
+
                                 const Premio = mongoose.model('Premio');
                                 const multer = require('multer');
                                 const fs = require("fs");
@@ -17,7 +19,8 @@
 /*                                 const { facebook, google} = require ('../config');
  */
 
-                           
+                           //Maiz se refire a las estrellas 
+                           //Maiz2 a los maices
 
                                     const upload = multer({ 
                                       dest: "upload/",
@@ -159,6 +162,15 @@
                                             user:user._id
                                           });
                                            await maiz.save();
+
+                                           const maiz=new Maiz2({
+                                            amarillo:'0',
+                                            morado:'0',
+                                            blanco:'0',
+                                            rojo:'0',
+                                            user:user._id
+                                          });
+                                           await maiz2.save();
                                         }
                                         const token = jwt.sign({userId:user._id},jwtkey)
                                                                                    
@@ -219,6 +231,8 @@
 
 
                                         if(guarda2){
+
+
                                           const maiz=new Maiz({
                                             amarillo:'0',
                                             morado:'0',
@@ -227,6 +241,16 @@
                                             user:user._id
                                           });
                                            await maiz.save();
+                                           
+                                           const maiz2=new Maiz2({
+                                            amarillo:'0',
+                                            morado:'0',
+                                            blanco:'0',
+                                            rojo:'0',
+                                            user:user._id
+                                          });
+                                           await maiz2.save();
+
                                         }
 
 
@@ -332,13 +356,30 @@
 
                                   })
 
-
+                                  // trae las estrellas
                                   router.get('/maiz/:id',(req,res)=>{
 
                                   
                                     const user = {_id:req.params.id}
 
                                     Maiz.find({user:user})
+                                    .exec(function (err, maices) {
+                                      if (err) return console.log(err);
+                                      
+                                      res.send(maices);
+                                    });                            
+
+
+
+                                   })
+
+                                   //trae los maices
+                                   router.get('/maiz2/:id',(req,res)=>{
+
+                                  
+                                    const user = {_id:req.params.id}
+
+                                    Maiz2.find({user:user})
                                     .exec(function (err, maices) {
                                       if (err) return console.log(err);
                                       
@@ -367,7 +408,7 @@
                                    })
 
 
-                                   router.put('/editar/maiz/:id', async (req,res)=>{
+                                   router.put('/editar/maiz2/:id', async (req,res)=>{
                                     
 
                                     let amarillo=0,morado=0,blanco=0,rojo=0;
@@ -413,7 +454,7 @@
                                     try{
 
                                       
-                                     await  Maiz.update(condition,dato);
+                                     await  Maiz2.update(condition,dato);
                                     res.send(dato); 
 
                                     }catch(err){
@@ -472,7 +513,8 @@
                                     try{
 
                                       
-                                     await  Maiz.update(condition,dato);
+                                     await  Maiz.update(condition,dato);//estrellas
+                                     await Maiz2.update(condition,amarillo)//maices
                                     res.send(dato); 
 
                                     }catch(err){
