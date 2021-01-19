@@ -123,7 +123,8 @@
 
                                     router.get('/politica/de/privacidad',(req,res)=>{
 
-                                      res.send('sus datos estan seguros');
+                                      const mensaje='hola'
+                                      res.send({mensaje});
 
                                     })
 
