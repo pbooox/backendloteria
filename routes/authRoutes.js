@@ -581,9 +581,13 @@
 
                                   router.put('/user/:id',async (req,res)=>{
                                     
-                                    
                                    let cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                                    let rename='';
+                                  let cambio=req.body.foto.substring(0,3);
+                                  console.log(cambio);
+                                    let foto='';
+
+                                   if(cambio!="htt"){
 
                                     for(let i=1;i<=5;i++){
 
@@ -600,9 +604,18 @@
                                     })
 
                                   
-                                    
+                                     foto=rename+'.png';
+                                  }else{
+                                    foto=req.body.foto;
+
+                                  }
+
+
+
                                     var condition={_id:req.params.id};
-                                    const foto=rename+'.png';
+                                    
+
+
                                     const {email,nombre} = req.body;
                                     const dato={
                                       email,
