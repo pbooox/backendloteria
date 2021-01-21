@@ -215,7 +215,7 @@
                                                 socket.on('jugadores',data=>{
 
                                                     if(io.nsps['/'].adapter.rooms[data.codigo]==undefined){
-                                                        const mensaje='Código de sala incorrecto'    
+                                                        const mensaje='Código de mesa incorrecto'    
                                                         socket.emit('eventoerror',mensaje)
 
                                                         return;
@@ -254,7 +254,7 @@
                     
                                                     if(existe==0){
                                                     
-                                                    const mensaje='Código de sala incorrecto'    
+                                                    const mensaje='Código de mesa incorrecto'    
                                                     socket.emit('eventoerror',mensaje)
                                                     return;
                                                     }
@@ -326,7 +326,7 @@
 
                                                     let salroom=data.sala
                                                     if(io.nsps['/'].adapter.rooms[salroom]==undefined){
-                                                        const mensaje1='Sala En Mantenimiento.'  
+                                                        const mensaje1='Mesa En Mantenimiento.'  
                                                          socket.emit('lleno',mensaje1) 
                                                         return;
                                                        } 
@@ -619,6 +619,15 @@
 
                                                     });
 
+
+
+
+
+
+
+
+
+
                                                     
                                                     socket.on('Ganador',(data)=>{
 
@@ -636,6 +645,15 @@
  
     
                                                             })
+
+
+
+
+
+
+
+
+
 
                                                     function CartasRandom (data){
 
@@ -676,6 +694,12 @@
 
 
 
+
+
+
+
+
+
                                                     socket.on('Emoji',(emoji)=>{
 
                                                     const sala= socket.room;
@@ -687,6 +711,15 @@
 
 
                                                         })
+
+
+
+
+
+
+
+
+
 
                                                         socket.on('figura',()=>{
 
@@ -703,6 +736,11 @@
                                                                 })
 
 
+
+
+
+
+
                                                         socket.on('Salir',data=>{
 
                                                             delete jugadores[socket.id]
@@ -711,8 +749,8 @@
                                                                 return;
                                                                } 
 
-                                                               console.log(socket.username+' abandonó la partida')
-                                                            socket.to(sala).emit('abandonar', socket.username);
+                                                               let message=`${socket.username} abandonó la partida 🤨`
+                                                               socket.to(sala).emit('abandonar', message);
                                                             const roomm = io.sockets.adapter.rooms[sala];
 
                                                             // Sacar usuario del cuarto
@@ -735,6 +773,11 @@
                                                                   }
              
                                                              }else{
+
+
+                                                            const index2 = Salas.indexOf(sala);
+             
+                                                                 if (index2 > -1) {
                                                                  const cantjug=io.nsps['/'].adapter.rooms[sala].length;
 
                                                                  roomm.arrary_cartas_restauradas.map(data=>{
@@ -759,7 +802,9 @@
                                                                   */
 
                                                                  socket.broadcast.emit ('aumentarcantidad', {cantidad:cantjug,sala:roomm.nombremesa,cod:sala});
-             
+                                                                }else{
+                                                                    return;
+                                                                }
                                                              }
                                                          }
                                                        
@@ -851,6 +896,11 @@
                                                       }
  
                                                  }else{
+
+
+                                                    const index2 = Salas.indexOf(sala);
+ 
+                                                    if (index2 > -1) {
                                                      const cantjug=io.nsps['/'].adapter.rooms[sala].length;
 
                                                      roomm.arrary_cartas_restauradas.map(data=>{
@@ -875,7 +925,7 @@
                                                       */
 
                                                      socket.broadcast.emit ('aumentarcantidad', {cantidad:cantjug,sala:roomm.nombremesa,cod:sala});
- 
+                                                    }
                                                  }
                                              }
                                            
