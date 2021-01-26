@@ -16,6 +16,16 @@
                                 const passport = require ('passport');
                                 const FacebookStrategy = require ('passport-facebook').Strategy;
                                 const GoogleStrategy = require ('passport-google-oauth20').Strategy;
+                                const cloudinary=require('cloudinary');
+
+                                cloudinary.config({
+                                  cloud_name:'dzs6u1kal',
+                                  api_key:'791179526877961',
+                                  api_secret:'ynb_EJlMiSadVDRPIR2ORMLJ2vE'
+
+
+                                })
+
 /*                                 const { facebook, google} = require ('../config');
  */
 
@@ -586,6 +596,7 @@
                                    let rename='';
                                   let cambio=req.body.foto.substring(0,3);
                                   console.log(cambio);
+                                  let foto_aux='';
                                     let foto='';
 
                                    if(cambio!="htt"){
@@ -599,13 +610,17 @@
 
                                       let file='./upload'+'/'+rename+'.png';
 
-                                   fs.writeFile(file, req.body.foto, 'base64', (err) => {
+                                    fs.writeFile(file, req.body.foto, 'base64', (err) => {
                                       if (err) throw err
                                
-                                    })
+                                    })           
 
-                                  
-                                     foto=rename+'.png';
+                                    foto_aux = await cloudinary.v2.uploader.upload(file);
+                                    console.log(foto_aux);
+                                    foto=foto_aux.url;
+                                    /*  foto_aux=rename+'.png'; */
+
+
                                   }else{
                                     foto=req.body.foto;
 
