@@ -676,7 +676,7 @@
                                                             io.to(data).emit('perdieron');
                                                             io.of('/').in(data).clients((error, socketIds) => { if (error) throw error; socketIds.forEach(socketId => io.sockets.sockets[socketId].leave(data)); }); 
 
-                                                            },5000);
+                                                            },6000);
 
                                                             
                                                             return;
@@ -701,10 +701,9 @@
                                                                 return;
                                                                } 
                                                             io.to(data).emit('movecard',{target:target,estado:true});
-                                                            io.to(data).emit('actualizafotos');
-                                                               
-                                                            
+                                                            io.to(data).emit('actualizafoto');
 
+                                                                                                                       
                                                         }
 
 
