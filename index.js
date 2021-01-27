@@ -664,8 +664,21 @@
                                                         const valor= room.juego_tablero;
                                                         console.log('tamaño de arreglo: '+valor.length);
                                                         if(valor.length===0){
+
                                                             clearInterval(room.intervalo);
+
+                                                            setTimeout(() => {
+
+                                                                if(io.nsps['/'].adapter.rooms[data]==undefined){
+                                                                    return;
+                                                                   } 
+
                                                             io.to(data).emit('perdieron');
+                                                            io.of('/').in(data).clients((error, socketIds) => { if (error) throw error; socketIds.forEach(socketId => io.sockets.sockets[socketId].leave(data)); }); 
+
+                                                            },5000);
+
+                                                            
                                                             return;
                                                         }else{
                                                         
@@ -688,6 +701,9 @@
                                                                 return;
                                                                } 
                                                             io.to(data).emit('movecard',{target:target,estado:true});
+                                                            io.to(data).emit('actualizafotos');
+                                                               
+                                                            
 
                                                         }
 
