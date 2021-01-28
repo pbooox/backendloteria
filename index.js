@@ -461,13 +461,19 @@
                                                                         if(room.tiempo==20){
 
 
-                                                                            const index = Salasprivadas.indexOf(salroom);
-                                                                            
-                                                                            if (index > -1) {
-                        
-                                                                                Salasprivadas.splice(index, 1);
-                        
-                                                                             }
+                                                                            if(Salasprivadas.length){
+
+                                                                                const index = Salasprivadas.indexOf(salroom);
+                                                                        
+                                                                                   Salasprivadas.splice(index, 1);                            
+                                                                                 
+
+                                                                            }
+
+                                                                       
+
+
+
 
                                                                              if(Salas.length){
 
