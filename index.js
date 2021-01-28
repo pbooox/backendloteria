@@ -424,7 +424,7 @@
 
                                                     function juego(salroom){
 
-                                                        const room = io.sockets.adapter.rooms[salroom];
+                                                        const room = io.sockets.adapter.rooms[socket.room];
                                                         if(io.nsps['/'].adapter.rooms[salroom]==undefined){
 
                                                             return;
