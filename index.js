@@ -403,7 +403,7 @@
                                                         
                                                         if(roomm.pasadas==0){
                                                             roomm.pasadas=1;
-                                                            juego(roomm.codigo_sala);
+                                                            juego(salroom);
                                                         }
                                                         
                                                        
@@ -459,6 +459,8 @@
                                                                         }
 
                                                                         if(room.tiempo==20){
+
+
                                                                             const index = Salasprivadas.indexOf(salroom);
                                                                             
                                                                             if (index > -1) {
@@ -467,15 +469,21 @@
                         
                                                                              }
 
+                                                                             if(Salas.length){
 
-                                                                             const index2 = Salas.indexOf(salroom);
+                                                                             let otrodelete=Salas.indexOf(salroom)
+
+                                    
+                                                                             Salas.splice(otrodelete,1);
+                                                                             socket.broadcast.emit ( 'eliminasala' , {cantidad:0,sala:'no hay',cod:salroom});
+                                                                             }
+                                                                          /*    const index2 = Salas.indexOf(salroom);
              
                                                                              if (index2 > -1) {
                          
                                                                                  Salas.splice(index, 1);
-                                                                                 socket.broadcast.emit ( 'eliminasala' , {cantidad:0,sala:'no hay',cod:salroom});
 
-                                                                              }
+                                                                              } */
                                                                         }
 
                                                                         if(io.nsps['/'].adapter.rooms[salroom]==undefined){
