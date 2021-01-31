@@ -36,7 +36,6 @@
                                       dest: "upload/",
                                     });
                                                             
-                                    router.use(express.static('upload'))
 
                                     router.use(bodyParser.urlencoded({ extended: true }))
                                     router.use(bodyParser.json({ limit: '15MB' }))
