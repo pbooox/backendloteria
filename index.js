@@ -758,7 +758,7 @@
                                                                } 
                                                             const roomm = io.sockets.adapter.rooms[sala];
 
-                                                             socket.emit('cantidad_figura',roomm.figuras);
+                                                             socket.emit('cantidad_figura',{valor:roomm.figuras,color:roomm.color});
         
         
         
