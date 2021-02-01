@@ -262,7 +262,7 @@
 
 
                                         const token = jwt.sign({userId:user._id},jwtkey)
-                                        res.send('si')
+                                        res.send({token})
 
                                       }else{
 
