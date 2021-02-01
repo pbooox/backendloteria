@@ -405,6 +405,78 @@
                                    })
 
 
+
+                                   // descontar maiz al entrar a sala de color superior.
+                                   router.put('/descontar/entra_sala/:id', async (req,res)=>{
+                                    
+                                    let amarillo=0,morado=0,blanco=0,rojo=0;
+
+                                    let condition={_id:req.params.id};
+                               
+                                    let operacion=req.body.color;
+
+                                      amarillo=req.body.amarillo;
+                                     morado=req.body.morado;
+                                      blanco=req.body.blanco;
+                                      rojo=req.body.rojo;
+                                    console.log(operacion);
+
+                                    if(operacion=="morado"){
+                                  
+                                       morado=morado-1;
+                                    }
+
+                                    if(operacion=="blanco"){
+                                       blanco=blanco-1;
+                                    }
+
+                                    if(operacion=="rojo"){
+                                       rojo=rojo-1;
+                                    }
+
+
+
+                                    const dato={
+                                      amarillo,
+                                      blanco,                                     
+                                      morado,
+                                      rojo
+                                  
+                                    }
+
+
+
+                                    try{
+
+                                      
+                                     await  Maiz2.update(condition,dato);
+                                    res.send(dato); 
+
+                                    }catch(err){
+                                      return res.status(422).send(err.message)
+                                    }
+                                    
+                                    
+                                  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                    router.get('/premios/:id',(req,res)=>{
 
                                   
