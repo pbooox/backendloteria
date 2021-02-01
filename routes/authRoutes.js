@@ -36,6 +36,7 @@
                                       dest: "upload/",
                                     });
                                                             
+                                    router.use(express.static('upload'))
 
                                     router.use(bodyParser.urlencoded({ extended: true }))
                                     router.use(bodyParser.json({ limit: '15MB' }))
@@ -616,7 +617,7 @@
 
                                     foto_aux = await cloudinary.v2.uploader.upload(file);
                                     console.log(foto_aux);
-                                    foto=foto_aux.url;
+                                    foto=foto_aux.secure_url;
                                     /*  foto_aux=rename+'.png'; */
 
 
