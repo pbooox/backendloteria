@@ -161,10 +161,16 @@
                                       console.log(nombre)
                                       
                                         try{
+
+                                          const  correo= await User.findOne({email})
+                                          if(!correo){
+                                          
                                         const user = new User({email,nombre,password,foto});
                                         let guarda= await  user.save();
 
+                                          console.log('valor de guarda: '+guarda);
                                         if(guarda){
+
                                           const maiz=new Maiz({
                                             amarillo:'0',
                                             morado:'0',
@@ -187,33 +193,18 @@
                                                                                    
 
                                        res.redirect("msrm42app://msrm42app.io?id="+token); 
-                                        
+                                      }else{
+
+                                        const token2 = jwt.sign({userId:correo._id},jwtkey)
+                                        res.redirect("msrm42app://msrm42app.io?id="+token2);
+                                      
+                                            
+                                      }
                                        }catch(err){
-                                  
-
-
-
-                                        const user = await User.findOne({email})
-                                        if(!user){
-                                        const error='Correo o contraseña incorrecto'
+                                       
+                                        const error='el Correo ya se encuentra registrado';
                                         console.log(error)
-                                          res.send(error); 
-                                            }
-                                        try{
-                                          const token = jwt.sign({userId:user._id},jwtkey)
-                                          res.redirect("msrm42app://msrm42app.io?id="+token); 
-                                          
-                                        }catch(err){
-                                        const error='Correo o contraseña incorrecto'
-                                        console.log(error)
-                                          res.send(error); 
-  
-                                        }
-
-
-
-
-
+                                        res.send(error)
 
                                       }  
 
@@ -235,6 +226,10 @@
 
                                     const {email,nombre,password,foto} = req.body;
                                       try{
+
+                                        const  correo= await User.findOne({email})
+                                          if(!correo){
+
                                         const user = new User({email,nombre,password,foto});
                                        
                                        let guarda2= await  user.save();
@@ -267,7 +262,15 @@
 
 
                                         const token = jwt.sign({userId:user._id},jwtkey)
-                                        res.send({token})
+                                        res.send('si')
+
+                                      }else{
+
+                                        const error='el Correo ya se encuentra registrado';
+                                        console.log(error)
+                                        res.send(error)
+
+                                      }
 
                                       }catch(err){
                                         const error='el Correo ya se encuentra registrado';
