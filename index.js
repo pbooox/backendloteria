@@ -122,8 +122,8 @@
 
                                             socket.on('jugador',data=>{
                                             
-                                    
                                                 jugadores[socket.id] = data.nombre;
+
                                                 //guarda el nombre de manera global
                                                socket.username=data.nombre;
                                                 room='';
@@ -644,6 +644,10 @@
 
                                                     
                                                     socket.on('Ganador',(data)=>{
+
+
+                                                        /* console.log('valor de figura: '+data.valor)
+                                                        console.log('arreglo: '+data.dato) */
 
                                                         const sala= socket.room;
                                                         if(io.nsps['/'].adapter.rooms[sala]==undefined){

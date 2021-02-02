@@ -1,4 +1,7 @@
                                 const express = require('express')
+                                const axios = require('axios');
+
+
                                 const mongoose = require('mongoose')
                                 const jwt = require('jsonwebtoken')
                                 const {jwtkey} = require('../keys')
@@ -310,19 +313,42 @@
 
                                   router.put('/actualiza/compra/:id',async(req,res)=>{
 
+                                      // Tambien hacer la consulta del premio para saber la cantidad de cupones y del precio en maiz
+                                      // esta consulta por medio del id del premio que se recibe aquí.
                                     
                                     const condition={_id:req.params.id};                              
                                      let morado=0,amarillo=0,blanco=0,rojo=0;
                                       let cupon=0,maiz=0,operacion='';
+                                      let user_id=req.body.id_usuario;
 
                                        cupon=req.body.cupon;
                                        maiz=req.body.maiz;
                                         operacion=req.body.color;
 
-                                       amarillo=req.body.amarillo;
-                                      morado=req.body.morado;
-                                       blanco=req.body.blanco;
-                                       rojo=req.body.rojo;
+                                  /*      server("http://jsonplaceholder.typicode.com/users",(err,response,body)=>{
+                                          if (!err){
+                                              const users = JSON.parse(body);
+                                              console.log('Valores obtenidos'+users);
+
+
+                                          }
+                                      }) */
+
+                                      const response = await axios.get('https://jsonplaceholder.typicode.com/users')
+                                      console.log(response.data);
+                                      
+                                        const estrellas= await  Maiz.find({user:user_id})
+
+
+                                        console.log(estrellas)
+
+                                        return;
+
+
+                                        amarillo=estrellas[0].amarillo;
+                                      morado=estrellas[0].morado;
+                                      blanco=estrellas[0].blanco;
+                                      rojo=estrellas[0].rojo;
                                       
  
                                      if(operacion=="morado" && morado>=maiz && cupon>0 ){
@@ -414,26 +440,46 @@
                                     let condition={_id:req.params.id};
                                
                                     let operacion=req.body.color;
-
-                                      amarillo=req.body.amarillo;
-                                     morado=req.body.morado;
-                                      blanco=req.body.blanco;
-                                      rojo=req.body.rojo;
-                                    console.log(operacion);
-
-                                    if(operacion=="morado"){
+                                    let user_id=req.body.id_usuario;
                                   
-                                       morado=morado-1;
+                                    var estado=0;
+
+                                    if(operacion==="amarillo"){
+
+                                      const mensaje='Si'
+                                      res.send({mensaje}); 
+                                      return;
+
                                     }
 
-                                    if(operacion=="blanco"){
-                                       blanco=blanco-1;
-                                    }
+                                   const maices= await  Maiz2.find({user:user_id})
 
-                                    if(operacion=="rojo"){
-                                       rojo=rojo-1;
-                                    }
+                                      amarillo=maices[0].amarillo;
+                                      morado=maices[0].morado;
+                                      blanco=maices[0].blanco;
+                                      rojo=maices[0].rojo;
 
+                                      if(operacion==="morado" && morado>0){
+                                
+                                        morado=morado-1;
+                                        estado=1;
+                                     }
+
+
+                                     if(operacion==="blanco" && blanco>0){
+                                        blanco=blanco-1;
+                                        estado=2;
+                                     }
+ 
+                                     if(operacion==="rojo" && rojo>0){
+                                       console.log('entra')
+                                        rojo=rojo-1;
+                                        estado=3
+                                     }
+
+                                     if(estado==0){
+                                       return;
+                                     }
 
 
                                     const dato={
@@ -501,29 +547,43 @@
                                     let condition={_id:req.params.id};
                                
                                     let operacion=req.body.color;
+                                    let user_id=req.body.id_usuario;
+                                  
+                                    var estado=0;
 
-                                      amarillo=req.body.amarillo;
-                                     morado=req.body.morado;
-                                      blanco=req.body.blanco;
-                                      rojo=req.body.rojo;
-                                    console.log(operacion);
+                            
+                                    const maices= await  Maiz2.find({user:user_id})
+
+                                    amarillo=maices[0].amarillo;
+                                    morado=maices[0].morado;
+                                    blanco=maices[0].blanco;
+                                    rojo=maices[0].rojo;
 
                                     if(operacion=="morado" && amarillo>5 ){
                                       console.log('entra al morado')
                                        amarillo=amarillo-6;
                                        morado=morado+1;
+                                       estado=1;
                                     }
 
                                     if(operacion=="blanco" &&morado>5){
                                        morado=morado-6;
                                        blanco=blanco+1;
+                                       estado=2;
                                     }
 
                                     if(operacion=="rojo" && blanco>5){
                                        blanco=blanco-6
                                        rojo=rojo+1;
+                                       estado=3;
                                     }
 
+
+
+                                    if(estado==0){
+
+                                      return;
+                                    }
 
 
                                     const dato={
@@ -557,12 +617,16 @@
                                     let condition={_id:req.params.id};
                                
                                     let operacion=req.body.color;
-                                    
+                                    let user_id=req.body.id_usuario;
 
-                                     let amarillo=req.body.amarillo;
-                                    let morado=req.body.morado;
-                                   let   blanco=req.body.blanco;
-                                    let  rojo=req.body.rojo;
+
+                                    const estrellas= await  Maiz.find({user:user_id})
+
+                                    console.log('estrellas: '+estrellas)
+                                    amarillo=estrellas[0].amarillo;
+                                    morado=estrellas[0].morado;
+                                    blanco=estrellas[0].blanco;
+                                    rojo=estrellas[0].rojo;
                                     
                                     let  cantidad=req.body.cantidad;
 
@@ -620,18 +684,67 @@
                                     
                                   })
 
-
-
                                   router.put('/ganar/maiz2/:id', async (req,res)=>{
-                                    console.log('se invoca el ganar maiz 2')
 
 
                                     let condition={_id:req.params.id};
                                
                                     let operacion=req.body.color;
-                                    
+                                    let user_id=req.body.id_usuario;
 
-                                     let amarillo=req.body.amarillo;
+                                    console.log('color : '+ operacion)
+                                    const maices= await  Maiz2.find({user:user_id})
+                                    console.log('maices Ganador: '+maices)
+
+    
+                                     let amarillo=maices[0].amarillo;
+                            
+                                    if(operacion=="amarillo"){
+                                    
+                                      amarillo=amarillo+1;
+                                     }
+
+                                     console.log('luego de asignar 1: '+amarillo)
+
+                                    const dato={
+                                      amarillo
+                         
+                                  
+                                    }
+
+
+                                    try{
+
+                                                
+                                     await Maiz2.update(condition,{$set:{amarillo:amarillo}})//maices
+                                 
+                                    res.send(dato); 
+
+                                    }catch(err){
+                                      console.log(err);
+                                      return res.status(422).send(err.message)
+                                    }
+                                    
+                                    
+                                  })
+
+                             /*      router.put('/ganar/maiz2/:id', async (req,res)=>{
+
+
+                                    let condition={_id:req.params.id};
+                               
+                                    let operacion=req.body.color;
+                                    let user_id=req.body.id_usuario;
+
+                                    const maices= await  Maiz2.find({user:user_id})
+
+                                    console.log('maices ganador: '+maices)
+
+                                     let amarillo=maices[0].amarillo;
+
+
+    
+                           
                             
                                     if(operacion=="amarillo"){
                                     
@@ -658,11 +771,53 @@
                                     }
                                     
                                     
+                                  }) */
+
+
+
+
+                                  router.put('/ganar/maiz3/:id', async (req,res)=>{
+
+
+                                    let condition={_id:req.params.id};
+                               
+                                    let operacion=req.body.color;
+                                    let user_id=req.body.id_usuario;
+
+                                    const maices= await  Maiz2.find({user:user_id})
+                                    console.log('maices perdedor: '+maices)
+
+    
+                                     let amarillo=maices[0].amarillo;
+                            
+                                    if(operacion=="amarillo"){
+                                    
+                                      amarillo=amarillo+2;
+                                     }
+
+                                     console.log('luego de asignar 2: '+amarillo)
+
+                                    const dato={
+                                      amarillo
+                         
+                                  
+                                    }
+
+
+                                    try{
+
+                                                
+                                     await Maiz2.update(condition,{$set:{amarillo:amarillo}})//maices
+                                 
+                                    res.send(dato); 
+
+                                    }catch(err){
+                                      console.log(err);
+                                      return res.status(422).send(err.message)
+                                    }
+                                    
+                                    
                                   })
-
-
-
-
 
 
                                   router.put('/user/:id',async (req,res)=>{
