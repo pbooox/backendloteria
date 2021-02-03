@@ -293,7 +293,7 @@
 
                                     if(foto===null){
 
-                                      foto='https://res.cloudinary.com/dzs6u1kal/image/upload/v1612317622/Logo_apk_qwst1c.png'
+                                      foto='https://res.cloudinary.com/dzs6u1kal/image/upload/v1612367624/unscreen-001_udvrrv.png'
                                     }
 
                                     

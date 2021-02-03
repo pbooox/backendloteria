@@ -649,7 +649,7 @@
                                                         /* console.log('valor de figura: '+data.valor)
                                                         console.log('arreglo: '+data.dato) */
 
-                                                        let valorMarcado=0
+                                                   /*      let valorMarcado=0
                                                         valorMarcado= data.valor;
                                                         let estados=0;
                                                         let gana=false;
@@ -689,7 +689,7 @@
                                                             if(!gana){
 
                                                                 return;
-                                                            }
+                                                            } */
 
                                                         const sala= socket.room;
                                                         if(io.nsps['/'].adapter.rooms[sala]==undefined){
