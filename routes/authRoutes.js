@@ -214,7 +214,6 @@
 
 
                                       
-                                    /* return res.redirect("OAuthLogin://login?id=" + req.user.id); */
                                     });
 
 
@@ -283,6 +282,95 @@
                                       
                                       
                                   })
+
+
+
+                                  router.post('/signup/google/',async (req,res)=>{
+
+                                    let email=req.body.email;
+                                    let nombreaux=req.body.nombreaux;
+                                    let foto = req.body.foto;
+
+                                    if(foto===null){
+
+                                      foto='https://res.cloudinary.com/dzs6u1kal/image/upload/v1612317622/Logo_apk_qwst1c.png'
+                                    }
+
+                                    
+
+                                    const password="";
+                                  
+                                    let nombre="";
+
+                                    if( nombreaux.toString().length>9){
+
+                                     nombre= nombreaux.toString().substr(0,9)
+
+                                    }else{
+                                      nombre=nombreaux+' ';
+
+                                    }
+                                    console.log('nombre: '+nombre)
+                                    console.log('email: '+email);
+                                    console.log('foto: '+foto)
+
+                                  
+                                    
+                                      try{
+
+                                        const  correo= await User.findOne({email})
+                                        if(!correo){
+                                        
+                                      const user = new User({email,nombre,password,foto});
+                                      let guarda= await  user.save();
+
+                                        console.log('valor de guarda: '+guarda);
+                                      if(guarda){
+
+                                        const maiz=new Maiz({
+                                          amarillo:'0',
+                                          morado:'0',
+                                          blanco:'0',
+                                          rojo:'0',
+                                          user:user._id
+                                        });
+                                         await maiz.save();
+
+                                         const maiz2=new Maiz2({
+                                          amarillo:'0',
+                                          morado:'0',
+                                          blanco:'0',
+                                          rojo:'0',
+                                          user:user._id
+                                        });
+                                         await maiz2.save();
+                                      }
+                                      const token = jwt.sign({userId:user._id},jwtkey)
+                                      res.send({token})
+                                          
+
+                                    }else{
+
+                                      const token = jwt.sign({userId:correo._id},jwtkey)
+                                      res.send({token})
+                                    
+                                          
+                                    }
+                                     }catch(err){
+                                     
+                                      const error='el Correo ya se encuentra registrado';
+                                      console.log(error)
+                                      res.send(error)
+
+                                    }  
+
+
+
+                                    
+                                  });
+
+
+
 
 
 

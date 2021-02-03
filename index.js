@@ -649,6 +649,48 @@
                                                         /* console.log('valor de figura: '+data.valor)
                                                         console.log('arreglo: '+data.dato) */
 
+                                                        let valorMarcado=0
+                                                        valorMarcado= data.valor;
+                                                        let estados=0;
+                                                        let gana=false;
+                                                        for (var i in data.dato){
+                                                            
+                                                            for(var j in data.dato[i]){
+                                                             
+                                                             
+                                                              if(data.dato[i][j].estado){
+                                                                estados=estados+1;
+                                                             
+                                                                }
+                                                            }
+                                                          
+                
+                                                          }
+                
+                                                          console.log('valor de estados: '+estados);
+
+                                                          if(valorMarcado==1 && estados==4 || valorMarcado==2 && estados==4 ){
+                                                            gana=true
+                                                          }
+                    
+                                                          if(valorMarcado==3 && estados==5  || valorMarcado==4 && estados==5 ){
+                                                            gana=true
+                                                          }
+                    
+                                                          if(valorMarcado==5 && estados==6 || valorMarcado==6 && estados==6 || valorMarcado==7 && estados==6 ){
+                                                            gana=true
+                                                          }
+                    
+                                                          if(valorMarcado==8 && estados==9){
+                                                            gana=true;
+                                                          }
+
+
+                                                            if(!gana){
+
+                                                                return;
+                                                            }
+
                                                         const sala= socket.room;
                                                         if(io.nsps['/'].adapter.rooms[sala]==undefined){
                                                             return;
