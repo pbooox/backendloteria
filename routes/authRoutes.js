@@ -29,11 +29,7 @@
 
                                 })
 
-/*                                 const { facebook, google} = require ('../config');
- */
 
-                           //Maiz se refire a las estrellas 
-                           //Maiz2 a los maices
 
                                     const upload = multer({ 
                                       dest: "upload/",
@@ -50,8 +46,8 @@
                                 passport.deserializeUser((user, done) => done(null, user));
 
                                 passport.use(new GoogleStrategy({
-                                  clientID: "390484653598-7egpn92fieb83krkm49t68qh2gvai1vc.apps.googleusercontent.com", // Add your clientID
-                                  clientSecret: "WxnPzf7zU63X5bVEDm-6BYFj", // Add the secret here
+                                  clientID: "390484653598-7egpn92fieb83krkm49t68qh2gvai1vc.apps.googleusercontent.com", 
+                                  clientSecret: "WxnPzf7zU63X5bVEDm-6BYFj", 
                                   callbackURL: '/auth/google/callback'
                                   }, (accessToken, refreshToken, profile, done) => {
 
@@ -63,8 +59,8 @@
 
 
                                   passport.use(new FacebookStrategy({
-                                    clientID: "1690675411093038", // Add your clientID
-                                    clientSecret: "f586453d81e7285f7e396ff228cdeaf8", // Add the secret here
+                                    clientID: "1690675411093038", 
+                                    clientSecret: "f586453d81e7285f7e396ff228cdeaf8", 
                                     callbackURL: '/auth/facebook/callback',
                                     profileFields: ['email', 'name', 'displayName', 'picture']
                                     }, (accessToken, refreshToken, profile, done) => {
@@ -98,11 +94,7 @@
 
 
                                        }catch(err){
-                                      /*   console.log('primer error: '+err)
-                                        const error='el Correo ya se encuentra registrado';
-                                        console.log(error)
-                                        res.send(error) */
-
+                                     
 
 
                                         const user = await User.findOne({email})
@@ -401,9 +393,7 @@
 
                                   router.put('/actualiza/compra/:id',async(req,res)=>{
 
-                                      // Tambien hacer la consulta del premio para saber la cantidad de cupones y del precio en maiz
-                                      // esta consulta por medio del id del premio que se recibe aquí.
-                                    
+                                   
                                     const condition={_id:req.params.id};                              
                                      let morado=0,amarillo=0,blanco=0,rojo=0;
                                       let cupon=0,maiz=0,operacion='';
@@ -413,14 +403,7 @@
                                        maiz=req.body.maiz;
                                         operacion=req.body.color;
 
-                                  /*      server("http://jsonplaceholder.typicode.com/users",(err,response,body)=>{
-                                          if (!err){
-                                              const users = JSON.parse(body);
-                                              console.log('Valores obtenidos'+users);
-
-
-                                          }
-                                      }) */
+                                
 
                                       const response = await axios.get('https://jsonplaceholder.typicode.com/users')
                                       console.log(response.data);
@@ -501,7 +484,6 @@
 
                                    })
 
-                                   //trae los maices
                                    router.get('/maiz2/:id',(req,res)=>{
 
                                   
@@ -520,7 +502,6 @@
 
 
 
-                                   // descontar maiz al entrar a sala de color superior.
                                    router.put('/descontar/entra_sala/:id', async (req,res)=>{
                                     
                                     let amarillo=0,morado=0,blanco=0,rojo=0;
@@ -755,7 +736,7 @@
                                     try{
 
                                       
-                                await  Maiz.update(condition,dato);//estrellas
+                                await  Maiz.update(condition,dato);
 
                                
                           
@@ -804,7 +785,7 @@
                                     try{
 
                                                 
-                                     await Maiz2.update(condition,{$set:{amarillo:amarillo}})//maices
+                                     await Maiz2.update(condition,{$set:{amarillo:amarillo}})
                                  
                                     res.send(dato); 
 
@@ -816,50 +797,7 @@
                                     
                                   })
 
-                             /*      router.put('/ganar/maiz2/:id', async (req,res)=>{
-
-
-                                    let condition={_id:req.params.id};
-                               
-                                    let operacion=req.body.color;
-                                    let user_id=req.body.id_usuario;
-
-                                    const maices= await  Maiz2.find({user:user_id})
-
-                                    console.log('maices ganador: '+maices)
-
-                                     let amarillo=maices[0].amarillo;
-
-
-    
                            
-                            
-                                    if(operacion=="amarillo"){
-                                    
-                                      amarillo=amarillo+1;
-                                   }
-
-                                    const dato={
-                                      amarillo
-                         
-                                  
-                                    }
-
-
-                                    try{
-
-                                                
-                                     await Maiz2.update(condition,{$set:{amarillo:amarillo}})//maices
-                                 
-                                    res.send(dato); 
-
-                                    }catch(err){
-                                      console.log(err);
-                                      return res.status(422).send(err.message)
-                                    }
-                                    
-                                    
-                                  }) */
 
 
 
@@ -895,7 +833,7 @@
                                     try{
 
                                                 
-                                     await Maiz2.update(condition,{$set:{amarillo:amarillo}})//maices
+                                     await Maiz2.update(condition,{$set:{amarillo:amarillo}})
                                  
                                     res.send(dato); 
 
@@ -936,7 +874,7 @@
                                     foto_aux = await cloudinary.v2.uploader.upload(file);
                                     console.log(foto_aux);
                                     foto=foto_aux.secure_url;
-                                    /*  foto_aux=rename+'.png'; */
+                               
 
 
                                   }else{

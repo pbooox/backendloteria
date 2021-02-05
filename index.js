@@ -1058,9 +1058,6 @@
       
      
     
-                        app.get('/',requireToken,(req,res)=>{
-                            res.send({id:req.user.id,email:req.user.email,nombre:req.user.nombre,foto:req.user.foto})
-                        })
 
                       
 
