@@ -1,10 +1,8 @@
                                 const express  = require('express')
                                 const bodyParser = require('body-parser')
-                                const mongoose = require('mongoose')
-                                const passport = require('passport');
+                          
                                 const app = express();
 
-                                app.use(passport.initialize());
 
                                 const server=require('http').Server(app);
                                 const io = require('socket.io')(server,{pingInterval:1000,pingTimeout:50000});
@@ -14,33 +12,18 @@
                                 server.listen(process.env.PORT || 3000)
 
 
-                                /* const PORT = 3000 */
-                                const {mogoUrl} = require('./keys')
+                             
 
 
-                                require('./models/User');
-                                require('./models/Maiz');
-                                require('./models/Maiz2');
+                             
 
-                                require('./models/Premio');
-
-                                const requireToken = require('./middleware/requireToken')
-                                const authRoutes = require('./routes/authRoutes')
                                 app.use(bodyParser.json())
-                                app.use(authRoutes)
 
-                                mongoose.connect(mogoUrl,{
-                                    useNewUrlParser:true,
-                                    useUnifiedTopology:true
-                                })
+                             
 
-                                mongoose.connection.on('connected',()=>{
-                                    console.log("conectado a mongo: "+ app.set('port'))
-                                })
-
-                                mongoose.connection.on('error',(err)=>{
-                                    console.log("error: ",err)
-                                })
+                                app.get('/', function (req, res) {
+                                    res.send('Servidor Lotería');
+                                  })
 
 
 
@@ -1038,9 +1021,7 @@
 
                                                  console.log('nuevo: '+ roomm.escoge_carton)
 
-                                             /*     let message=`${socket.username} abandonó la partida 🤨`
-                                                 socket.to(sala).emit('abandonar', message) */
-                                                 
+                                            
 
 
                                              }
@@ -1061,14 +1042,6 @@
 
                       
 
-
-
-
-/* app.listen(app.get('port'),()=>{
-
-    
-    console.log(`Server on port ${app.get('port')}`);
-}) */
 
 
 
