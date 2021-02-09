@@ -503,7 +503,7 @@
                                                             const room2 = io.sockets.adapter.rooms[temp];
                                                             
                                                             
-                                                          room2.time=3;
+                                                          room2.time=4;
                                                        room2.intervalo= setInterval(function() {
       
                                                                       
@@ -533,9 +533,9 @@
                                                                                 }
                                                                                 room2.time--
 
-                                                                                if(room2.time==-3){
+                                                                                if(room2.time==-4){
                                                                                     
-                                                                                    room2.time = 3;
+                                                                                    room2.time = 4;
                                                                                 }
 
                                                                               /* setTimeout(() => {
@@ -546,7 +546,7 @@
                                                                           } else {
 
 
-                                                                            if(room2.time==3){
+                                                                            if(room2.time==4){
                                                                                 CartasRandom(temp);
                                                                             }
                                                                               room2.time--;
