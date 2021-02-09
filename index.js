@@ -533,7 +533,7 @@
                                                                                 }
                                                                                 room2.time--
 
-                                                                                if(room2.time==-5){
+                                                                                if(room2.time==-3){
                                                                                     
                                                                                     room2.time = 3;
                                                                                 }
