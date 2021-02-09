@@ -533,7 +533,7 @@
                                                                                 }
                                                                                 room2.time--
 
-                                                                                if(room2.time==-5){
+                                                                                if(room2.time==-3){
                                                                                     
                                                                                     room2.time = 6;
                                                                                 }
@@ -682,8 +682,10 @@
                                                       
                                                  
 
-                                                     socket.to(sala).emit('loteria',{nombre:socket.username,foto:data.foto,ganador:false,color:room.color,cantidad_estrellas:0});//enviar el mensaje del ganador a todos menos al ganador XD
+                                                             socket.to(sala).emit('loteria',{nombre:socket.username,foto:data.foto,ganador:false,color:room.color,cantidad_estrellas:0});//enviar el mensaje del ganador a todos menos al ganador XD
                                                              socket.emit('loteria',{nombre:socket.username,foto:data.foto,ganador:true,color:room.color,cantidad_estrellas:room.cantidad_maiz})
+
+
                                                      io.of('/').in(sala).clients((error, socketIds) => { if (error) throw error; socketIds.forEach(socketId => io.sockets.sockets[socketId].leave(sala)); }); 
  
     
