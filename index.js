@@ -209,7 +209,7 @@
 
 
 
-                                                    if(cantjug>3){
+                                                    if(cantjug>12){
                                                         const mensaje1='Sala llena.'  
                                                        
                                                         socket.emit('eventoerror',mensaje1)       
@@ -315,7 +315,7 @@
                                                        } 
 
                                                     const cantjug=io.nsps['/'].adapter.rooms[salroom].length;
-                                                    if(cantjug>3){
+                                                    if(cantjug>12){
                                                         const mensaje1='Sala llena.'  
 
                                                          socket.emit('lleno',mensaje1) 
