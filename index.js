@@ -262,7 +262,10 @@
                     
                     
                                                   console.log('en sala pivada si tiene codigo'+temp);
-                                                  socket.to(temp).emit('mensaje', socket.username) 
+                                                  socket.to(temp).emit('mensaje_configuracion', socket.username) 
+                                                  socket.to(temp).emit('mensaje_random', socket.username) 
+                                                  socket.to(temp).emit('mensaje_espera', socket.username) 
+
                                                   socket.emit('salaexistente')
                                                     })
                                                   
@@ -437,7 +440,8 @@
                                                                         console.log('room.remainseconds: '+room.remainingSeconds)
                                                                             room.tiempo--;
                                                                             io.to(salroom).emit('cuenta',{minutos:room.minutes,segundo:room.remainingSeconds,seg:room.tiempo} )
-                                                                            
+                                                                            io.to(salroom).emit('cuenta_random',{minutos:room.minutes,segundo:room.remainingSeconds,seg:room.tiempo} )
+
                                                                             // emit time
                                                                         }
 
@@ -747,7 +751,6 @@
                                                                 return;
                                                                } 
                                                             io.to(data).emit('movecard',{target:target,estado:true});
-                                                            io.to(data).emit('actualizafoto');
 
                                                                                                                        
                                                         }
@@ -810,7 +813,12 @@
                                                                } 
 
                                                                let message=`${socket.username} abandonó la partida 🤨`
-                                                               socket.to(sala).emit('abandonar', message);
+                                                               socket.to(sala).emit('abandonar_configuracion', message)
+                                                               socket.to(sala).emit('abandonar_random', message)
+                                                               socket.to(sala).emit('abandonar_espera', message)
+                                                               socket.to(sala).emit('abandonar_juego', message)
+
+
                                                             const roomm = io.sockets.adapter.rooms[sala];
 
                                                             // Sacar usuario del cuarto
@@ -931,9 +939,13 @@
                                                } 
                                                let message=`${socket.username} se desconectó por mala conexión 😢`
 
-                                               socket.to(sala).emit('abandonar', message)
-                                               socket.emit('usuariodesconectado');
-                                               console.log(socket.username + ' salió, error 404')
+                                               socket.to(sala).emit('abandonar_configuracion', message)
+                                               socket.to(sala).emit('abandonar_random', message)
+                                               socket.to(sala).emit('abandonar_espera', message)
+                                               socket.to(sala).emit('abandonar_juego', message)
+
+/*                                                socket.emit('usuariodesconectado');
+ */                                               console.log(socket.username + ' salió, error 404')
                                                const roomm = io.sockets.adapter.rooms[sala];
                                                console.log(roomm);
                                                    
