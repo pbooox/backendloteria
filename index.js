@@ -367,7 +367,9 @@
                                                         /* io.to(temp).emit('mensaje', socket.username) */
                         
                         
-                                                      socket.to(salroom).emit('mensaje', socket.username)
+                                                      socket.to(temp).emit('mensaje_configuracion', socket.username) 
+                                                  socket.to(temp).emit('mensaje_random', socket.username) 
+                                                  socket.to(temp).emit('mensaje_espera', socket.username) 
                                                        return socket.emit('salaexistente')
 
                         
