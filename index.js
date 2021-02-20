@@ -177,6 +177,19 @@
                                             })
 
 
+                                                socket.on('jugadores_sala',()=>{
+                                                    const sala= socket.room;
+
+                                                    if(io.nsps['/'].adapter.rooms[sala]==undefined){
+
+                                                        return;
+                                                       } 
+                                                    const cantjug=io.nsps['/'].adapter.rooms[sala].length;
+
+                                                  socket.emit('cantidad_jugadores', cantjug) 
+
+
+                                                })
 
 
                                             socket.on('nombremesa',()=>{
@@ -272,10 +285,9 @@
                                                        
                     
                                                     const cantjugador=io.nsps['/'].adapter.rooms[temp].length;
-                                                console.log(`${socket.username} se ha unido a la sala: ${temp} `)
                     
-                                                console.log('cantidad de jugadores: '+cantjug);
-                    
+                                                    socket.to(temp).emit('cantidad_jugadores', cantjugador); 
+
                                                
 
                                             
@@ -379,11 +391,11 @@
                                                         const cantjugadores=io.nsps['/'].adapter.rooms[salroom].length;
 
                                                     
-                                                    console.log(`${socket.username} se ha unido a la sala: ${salroom} `)
                         
 
 
                                                     socket.broadcast.emit ( 'aumentarcantidad' , {cantidad:cantjugadores,sala:roomm.nombremesa,cod:salroom});
+                                                    socket.to(temp).emit('cantidad_jugadores', cantjugadores); 
 
     
                                                         
@@ -632,7 +644,7 @@
 
 
                                                     
-                                                    socket.on('Ganador',(data)=>{
+                                                    socket.on('Ganador',async(data)=>{
 
 
                                                         /* console.log('valor de figura: '+data.valor)
@@ -688,11 +700,14 @@
                                                       
                                                  
 
-                                                             socket.to(sala).emit('loteria',{nombre:socket.username,foto:data.foto,ganador:false,color:room.color,cantidad_estrellas:0});//enviar el mensaje del ganador a todos menos al ganador XD
-                                                             socket.emit('loteria',{nombre:socket.username,foto:data.foto,ganador:true,color:room.color,cantidad_estrellas:room.cantidad_maiz})
+                                                          await    socket.to(sala).emit('loteria',{nombre:socket.username,foto:data.foto,ganador:false,color:room.color,cantidad_estrellas:0});//enviar el mensaje del ganador a todos menos al ganador XD
+                                                          await   socket.emit('loteria',{nombre:socket.username,foto:data.foto,ganador:true,color:room.color,cantidad_estrellas:room.cantidad_maiz})
 
+                                                           setTimeout(() => {
 
-                                                     io.of('/').in(sala).clients((error, socketIds) => { if (error) throw error; socketIds.forEach(socketId => io.sockets.sockets[socketId].leave(sala)); }); 
+                                                            io.of('/').in(sala).clients((error, socketIds) => { if (error) throw error; socketIds.forEach(socketId => io.sockets.sockets[socketId].leave(sala)); }); 
+
+                                                           }, 1000);
  
     
                                                             })
@@ -872,6 +887,8 @@
                                                                   */
 
                                                                  socket.broadcast.emit ('aumentarcantidad', {cantidad:cantjug,sala:roomm.nombremesa,cod:sala});
+                                                                 socket.emit('cantidad_jugadores', cantjug) 
+
                                                                 }else{
                                                                     return;
                                                                 }
@@ -895,6 +912,8 @@
          
                                                          }else{
 
+                                                            const cantjug=io.nsps['/'].adapter.rooms[sala].length;
+
                                                              roomm.arrary_cartas_restauradas.map(data=>{
 
                                                                 if(data.id==socket.id){
@@ -909,6 +928,10 @@
                                                                 }
 
                                                              })
+
+
+
+                                                                 socket.emit('cantidad_jugadores', cantjug) 
 
                                                              console.log('nuevo: '+ roomm.escoge_carton)
 
@@ -999,6 +1022,8 @@
                                                       */
 
                                                      socket.broadcast.emit ('aumentarcantidad', {cantidad:cantjug,sala:roomm.nombremesa,cod:sala});
+                                                     socket.emit('cantidad_jugadores', cantjug) 
+
                                                     }
                                                  }
                                              }
@@ -1019,6 +1044,7 @@
                                                   }
 
                                              }else{
+                                                const cantjug=io.nsps['/'].adapter.rooms[sala].length;
 
                                                  roomm.arrary_cartas_restauradas.map(data=>{
 
@@ -1034,6 +1060,7 @@
                                                     }
 
                                                  })
+                                                 socket.emit('cantidad_jugadores', cantjug) 
 
                                                  console.log('nuevo: '+ roomm.escoge_carton)
 
