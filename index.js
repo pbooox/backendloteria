@@ -887,7 +887,7 @@
                                                                   */
 
                                                                  socket.broadcast.emit ('aumentarcantidad', {cantidad:cantjug,sala:roomm.nombremesa,cod:sala});
-                                                                 socket.emit('cantidad_jugadores', cantjug) 
+                                                                 socket.to(sala).emit('cantidad_jugadores', cantjug) 
 
                                                                 }else{
                                                                     return;
@@ -931,7 +931,7 @@
 
 
 
-                                                                 socket.emit('cantidad_jugadores', cantjug) 
+                                                             socket.to(sala).emit('cantidad_jugadores', cantjug) 
 
                                                              console.log('nuevo: '+ roomm.escoge_carton)
 
@@ -1022,7 +1022,7 @@
                                                       */
 
                                                      socket.broadcast.emit ('aumentarcantidad', {cantidad:cantjug,sala:roomm.nombremesa,cod:sala});
-                                                     socket.emit('cantidad_jugadores', cantjug) 
+                                                     socket.to(sala).emit('cantidad_jugadores', cantjug) 
 
                                                     }
                                                  }
@@ -1060,7 +1060,7 @@
                                                     }
 
                                                  })
-                                                 socket.emit('cantidad_jugadores', cantjug) 
+                                                 socket.to(sala).emit('cantidad_jugadores', cantjug) 
 
                                                  console.log('nuevo: '+ roomm.escoge_carton)
 
