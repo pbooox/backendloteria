@@ -222,7 +222,7 @@
 
 
 
-                                                    if(cantjug>12){
+                                                    if(cantjug>11){
                                                         const mensaje1='Sala llena.'  
                                                        
                                                         socket.emit('eventoerror',mensaje1)       
@@ -291,7 +291,7 @@
                                                
 
                                             
-                                                if(cantjugador==2){
+                                                if(cantjugador==6){
                                                  
                                                 if(roomm.pasadas==0){
                                                     roomm.pasadas=1;
@@ -330,7 +330,7 @@
                                                        } 
 
                                                     const cantjug=io.nsps['/'].adapter.rooms[salroom].length;
-                                                    if(cantjug>12){
+                                                    if(cantjug>11){
                                                         const mensaje1='Sala llena.'  
 
                                                          socket.emit('lleno',mensaje1) 
@@ -399,7 +399,7 @@
 
     
                                                         
-                                                    if(cantjugadores==2){
+                                                    if(cantjugadores==6){
                                                         
                                                         if(roomm.pasadas==0){
                                                             roomm.pasadas=1;
