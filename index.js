@@ -399,7 +399,7 @@
 
     
                                                         
-                                                    if(cantjugadores==6){
+                                                    if(cantjugadores==3){
                                                         
                                                         if(roomm.pasadas==0){
                                                             roomm.pasadas=1;
